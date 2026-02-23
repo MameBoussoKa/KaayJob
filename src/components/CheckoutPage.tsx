@@ -43,10 +43,10 @@ export function CheckoutPage({ onNavigate }: CheckoutPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white pt-20">
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Finalisez Votre Réservation</h1>
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#000080] mb-2">Finalisez Votre Réservation</h1>
           <p className="text-gray-600 text-lg">Vérifiez vos détails et effectuez le paiement</p>
         </div>
 

@@ -29,22 +29,22 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#000080] to-[#001a99] flex items-center justify-center py-12 px-4 pt-20">
       <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Bienvenue sur Kamwala</h1>
-          <p className="text-gray-600">Connectez-vous avec des prestataires de confiance</p>
+        <div className="text-center mb-8 animate-fade-in">
+          <h1 className="text-4xl font-bold text-[#FFF4EA] mb-2">KaayJob</h1>
+          <p className="text-[#FFF4EA] text-lg">Connectez-vous avec des prestataires de confiance</p>
         </div>
 
-        <Card className="shadow-lg border-0">
-          <CardHeader>
-            <CardTitle className="text-center">Commencer</CardTitle>
+        <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <CardHeader className="bg-gradient-to-r from-[#000080] to-[#001a99]">
+            <CardTitle className="text-center text-white text-2xl">Commencer</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-8">
             <Tabs defaultValue="customer" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="customer" className="text-base">Client</TabsTrigger>
-                <TabsTrigger value="provider" className="text-base">Prestataire</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100">
+                <TabsTrigger value="customer" className="text-base data-[state=active]:bg-[#000080] data-[state=active]:text-white">Client</TabsTrigger>
+                <TabsTrigger value="provider" className="text-base data-[state=active]:bg-[#000080] data-[state=active]:text-white">Prestataire</TabsTrigger>
               </TabsList>
 
               <TabsContent value="customer">

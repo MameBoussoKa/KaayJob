@@ -92,11 +92,11 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white pt-20">
       {/* Header Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-16">
+      <section className="bg-gradient-to-r from-[#000080] to-[#001a99] text-white py-16 animate-fade-in">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">Catégories de Services</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Catégories de Services</h1>
           <p className="text-xl opacity-90">
             Choisissez parmi notre large gamme de services professionnels
           </p>
@@ -107,23 +107,24 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.map((category) => {
+            {categories.map((category, index) => {
               const IconComponent = category.icon;
               return (
                 <Card 
                   key={category.name}
-                  className="hover:shadow-lg transition-all duration-300 cursor-pointer border-0 shadow-md bg-white hover:scale-105"
+                  className="hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 border-[#000080]/10 shadow-lg bg-white hover:scale-105 hover:border-[#000080]/30 animate-slide-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                   onClick={() => onNavigate('service-detail')}
                 >
-                  <CardHeader className="pb-4">
+                  <CardHeader className="pb-4 bg-gradient-to-r from-[#FFF4EA] to-white">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center">
-                        <div className="p-3 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg mr-4">
-                          <IconComponent className="w-8 h-8 text-blue-600" />
+                        <div className="p-3 bg-gradient-to-br from-[#000080] to-[#001a99] rounded-lg mr-4">
+                          <IconComponent className="w-8 h-8 text-[#FFF4EA]" />
                         </div>
-                        <CardTitle className="text-xl">{category.name}</CardTitle>
+                        <CardTitle className="text-xl text-[#000080]">{category.name}</CardTitle>
                       </div>
-                      <Badge className={category.color}>
+                      <Badge className="bg-[#000080] text-[#FFF4EA] hover:bg-[#001a99]">
                         {category.providers} prestataires
                       </Badge>
                     </div>

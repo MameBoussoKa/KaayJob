@@ -80,11 +80,11 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-16">
+      <section className="bg-gradient-to-r from-[#000080] to-[#001a99] text-white py-16 animate-fade-in">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">Contactez-nous</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Contactez-nous</h1>
           <p className="text-xl opacity-90">
             Besoin d'aide ? Nous sommes là pour répondre à vos questions et préoccupations.
           </p>
@@ -94,10 +94,10 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <Card className="bg-white border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl flex items-center">
+          <div className="lg:col-span-2 animate-slide-up">
+            <Card className="bg-white border-2 border-[#000080]/10 shadow-lg hover:border-[#000080]/30 transition-all">
+              <CardHeader className="bg-gradient-to-r from-[#000080] to-[#001a99]">
+                <CardTitle className="text-2xl text-white flex items-center">
                   <MessageCircle className="w-6 h-6 mr-3 text-blue-600" />
                   Envoyez-nous un Message
                 </CardTitle>

@@ -56,27 +56,27 @@ export function BookingPage({ onNavigate }: BookingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white pt-20">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Réservez Votre Service</h1>
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#000080] mb-2">Réservez Votre Service</h1>
           <p className="text-gray-600 text-lg">Planifiez un rendez-vous avec Ahmed Khan - Plombier Expert</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Booking Form */}
-          <div className="lg:col-span-2">
-            <Card className="bg-white border-0 shadow-md">
-              <CardHeader>
-                <CardTitle className="text-2xl">Détails du Service</CardTitle>
+          <div className="lg:col-span-2 animate-slide-up">
+            <Card className="bg-white border-2 border-[#000080]/10 shadow-lg hover:border-[#000080]/30 transition-all">
+              <CardHeader className="bg-gradient-to-r from-[#FFF4EA] to-white border-b border-[#000080]/10">
+                <CardTitle className="text-2xl text-[#000080]">Détails du Service</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Service Type */}
                   <div>
-                    <Label htmlFor="serviceType" className="text-base">Type de Service *</Label>
+                    <Label htmlFor="serviceType" className="text-base font-semibold text-[#000080]">Type de Service *</Label>
                     <Select onValueChange={(value) => handleInputChange('serviceType', value)}>
-                      <SelectTrigger className="mt-2 text-base">
+                      <SelectTrigger className="mt-2 text-base border-[#000080]/20 focus:border-[#000080]">
                         <SelectValue placeholder="Sélectionnez le type de service dont vous avez besoin" />
                       </SelectTrigger>
                       <SelectContent>

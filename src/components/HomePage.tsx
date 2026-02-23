@@ -126,20 +126,20 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
   return (
     <div className="min-h-screen bg-white pt-20">
-      {/* Hero Section with Video Background */}
-      <section className="relative h-screen bg-[#000080] text-white overflow-hidden">
-        {/* Video Background */}
+      {/* Hero Section with Senegalese Background Image */}
+      <section className="relative h-screen text-white overflow-hidden">
+        {/* Senegalese Background Image - Service Provider & Client Communication */}
         <div className="absolute inset-0">
-          {/* African-themed video background */}
-          <video
-            autoPlay
-            muted
-            loop
-            className="w-full h-full object-cover"
-            src="https://videos.pexels.com/video-files/3035335/3035335-hd_1920_1080_30fps.mp4"
+          {/* Senegalese professionals and client communication background image */}
+          <div
+            className="w-full h-full object-cover bg-cover bg-center"
+            style={{
+              backgroundImage: "url('https://i.pinimg.com/1200x/4d/5d/e8/4d5de82c946cd58e5f9dc7f723326633.jpg')",
+              backgroundAttachment: "fixed"
+            }}
           />
-          {/* Dark overlay with reduced opacity */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#000080]/60 via-[#000080]/50 to-[#000080]/70" />
+          {/* Black overlay */}
+          <div className="absolute inset-0 bg-black/40" />
         </div>
 
         {/* Content */}

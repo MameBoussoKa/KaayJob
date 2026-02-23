@@ -61,17 +61,17 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Provider Header */}
-            <Card className="bg-white border-0 shadow-md">
-              <CardContent className="p-8">
+            <Card className="bg-white border-2 border-[#000080]/10 shadow-lg hover:border-[#000080]/30 transition-all animate-slide-up">
+              <CardContent className="p-8 bg-gradient-to-br from-white to-[#FFF4EA]/30">
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                   <ImageWithFallback
                     src={provider.image}
                     alt={provider.name}
-                    className="w-32 h-32 rounded-lg object-cover"
+                    className="w-32 h-32 rounded-xl object-cover border-4 border-[#000080]/20 shadow-lg"
                   />
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h1 className="text-3xl font-bold text-gray-900">{provider.name}</h1>
+                      <h1 className="text-3xl font-bold text-[#000080]">{provider.name}</h1>
                       {provider.verified && (
                         <Badge className="bg-green-100 text-green-800">
                           <CheckCircle className="w-4 h-4 mr-1" />
@@ -79,7 +79,7 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xl text-blue-600 mb-3">{provider.title}</p>
+                    <p className="text-xl text-[#000080] font-semibold mb-3">{provider.title}</p>
                     
                     <div className="flex items-center gap-6 mb-4">
                       <div className="flex items-center">
@@ -95,9 +95,9 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
                             />
                           ))}
                         </div>
-                        <span className="ml-2 text-lg">{provider.rating} ({provider.reviews} avis)</span>
+                        <span className="ml-2 text-lg font-semibold text-[#000080]">{provider.rating} ({provider.reviews} avis)</span>
                       </div>
-                      <div className="flex items-center text-gray-600">
+                      <div className="flex items-center text-[#000080] font-semibold">
                         <Award className="w-5 h-5 mr-1" />
                         <span>{provider.yearsExperience} ans d'expérience</span>
                       </div>
