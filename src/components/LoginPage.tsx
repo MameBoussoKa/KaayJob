@@ -22,7 +22,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent, type: 'login' | 'signup') => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mock authentication - redirect to dashboard
     onNavigate('dashboard');
@@ -55,7 +55,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                   </TabsList>
 
                   <TabsContent value="login">
-                    <form onSubmit={(e) => handleSubmit(e, 'login')} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <Label htmlFor="email">Email</Label>
                         <Input
@@ -87,7 +87,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                   </TabsContent>
 
                   <TabsContent value="signup">
-                    <form onSubmit={(e) => handleSubmit(e, 'signup')} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <Label htmlFor="name">Nom complet</Label>
                         <Input
@@ -152,7 +152,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                   </TabsList>
 
                   <TabsContent value="login">
-                    <form onSubmit={(e) => handleSubmit(e, 'login')} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <Label htmlFor="provider-email">Email</Label>
                         <Input
@@ -184,7 +184,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                   </TabsContent>
 
                   <TabsContent value="signup">
-                    <form onSubmit={(e) => handleSubmit(e, 'signup')} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <Label htmlFor="provider-name">Nom de l'entreprise</Label>
                         <Input

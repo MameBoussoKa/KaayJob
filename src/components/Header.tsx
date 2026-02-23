@@ -1,4 +1,7 @@
 import { Button } from "./ui/button";
+import { Logo } from "./Logo";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 interface HeaderProps {
   currentPage: string;
@@ -6,66 +9,108 @@ interface HeaderProps {
 }
 
 export function Header({ currentPage, onNavigate }: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navItems = [
+    { id: 'home', label: 'Accueil' },
+    { id: 'categories', label: 'Services' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo - Left */}
           <div 
-            className="flex items-center cursor-pointer"
-            onClick={() => onNavigate('home')}
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={() => {
+              onNavigate('home');
+              setIsMenuOpen(false);
+            }}
           >
-            <h1 className="text-2xl font-bold text-blue-600">Kamwala</h1>
+            <Logo />
+            <span className="text-xl font-bold bg-gradient-to-r from-[#000080] to-blue-700 bg-clip-text text-transparent">
+              KaayJob
+            </span>
           </div>
-          
-          <nav className="hidden md:flex space-x-8">
-            <button
-              onClick={() => onNavigate('home')}
-              className={`${
-                currentPage === 'home' 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-600 hover:text-blue-600'
-              } pb-1 transition-colors`}
-            >
-              Accueil
-            </button>
-            <button
-              onClick={() => onNavigate('categories')}
-              className={`${
-                currentPage === 'categories' 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-600 hover:text-blue-600'
-              } pb-1 transition-colors`}
-            >
-              Services
-            </button>
-            <button
-              onClick={() => onNavigate('contact')}
-              className={`${
-                currentPage === 'contact' 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-600 hover:text-blue-600'
-              } pb-1 transition-colors`}
-            >
-              Contact
-            </button>
+
+          {/* Desktop Menu - Center */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => onNavigate(item.id)}
+                className={`px-4 py-2 font-semibold text-sm transition-all duration-300 rounded-lg ${
+                  currentPage === item.id 
+                    ? 'text-[#000080] bg-[#FFF4EA]' 
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-[#000080]'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
           </nav>
 
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
+            <button
               onClick={() => onNavigate('login')}
-              className="border-blue-600 text-blue-600 hover:bg-blue-50"
+              className="hidden sm:inline font-semibold text-[#000080] hover:text-blue-700 transition-colors text-sm"
             >
               Connexion
-            </Button>
+            </button>
             <Button
               onClick={() => onNavigate('dashboard')}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-[#000080] hover:bg-blue-900 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm h-10"
             >
-              Tableau de bord
+              Espace Client
             </Button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              {isMenuOpen ? (
+                <X size={24} className="text-[#000080]" />
+              ) : (
+                <Menu size={24} className="text-[#000080]" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden pb-4 border-t border-gray-200">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  onNavigate(item.id);
+                  setIsMenuOpen(false);
+                }}
+                className={`block w-full text-left px-4 py-3 font-semibold text-sm transition-colors ${
+                  currentPage === item.id 
+                    ? 'text-[#000080] bg-[#FFF4EA]' 
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <button
+              onClick={() => {
+                onNavigate('login');
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left px-4 py-3 font-semibold text-sm text-[#000080] hover:bg-gray-100"
+            >
+              Connexion
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

@@ -141,7 +141,7 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
                       </div>
                       <Button 
                         className="bg-blue-600 hover:bg-blue-700 text-white"
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent) => {
                           e.stopPropagation();
                           onNavigate('service-detail');
                         }}
