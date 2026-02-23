@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Wrench, Lightbulb, Paintbrush, Brush, Hammer, Car, Home, Scissors, Settings, Shield, MapPin, Search } from "lucide-react";
+import { MapPin, Search } from "lucide-react";
 import { useState } from "react";
 
 interface ServiceCategoriesPageProps {
@@ -13,83 +13,87 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
   const categories = [
     {
       name: "Plombier",
-      icon: Wrench,
+      image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8cGx1bWJlcml8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Réparation de fuites, installation de canalisations, nettoyage de drains et réparation de chauffes-eau",
       providers: 45,
       avgPrice: "25-40€/h",
-      color: "bg-blue-100 text-blue-800"
     },
     {
-      name: "Électricien", 
-      icon: Lightbulb,
+      name: "Électricien",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8ZWxlY3RyaWNpYW58ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Réparations électriques, câblage, installation de prises et luminaires",
       providers: 38,
       avgPrice: "30-50€/h",
-      color: "bg-yellow-100 text-yellow-800"
     },
     {
       name: "Peintre",
-      icon: Paintbrush,
+      image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8cGFpbnRpbmd8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Peinture intérieure et extérieure, préparation des murs et conseil en couleurs",
       providers: 52,
       avgPrice: "20-35€/h",
-      color: "bg-purple-100 text-purple-800"
     },
     {
       name: "Nettoyeur",
-      icon: Brush,
+      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8Y2xlYW5pbmd8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Nettoyage de maison, nettoyage en profondeur, nettoyage de bureau et déménagement",
       providers: 67,
       avgPrice: "15-25€/h",
-      color: "bg-green-100 text-green-800"
     },
     {
       name: "Menuisier",
-      icon: Hammer,
+      image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8Y2FycGVudGVyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
       description: "Réparation de meubles, menuiserie sur mesure, installation de portes et placards",
       providers: 29,
       avgPrice: "25-45€/h",
-      color: "bg-orange-100 text-orange-800"
     },
     {
       name: "Mécanicien",
-      icon: Car,
+      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8bWVjaGFuaWN8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Réparations automobiles, entretien, diagnostics et services de mécanicien mobile",
       providers: 34,
       avgPrice: "35-60€/h",
-      color: "bg-red-100 text-red-800"
     },
     {
       name: "Spécialiste CVC",
-      icon: Settings,
+      image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8aHZhYyUyMGVuZ2luZWVyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
       description: "Installation et réparation de chauffage, ventilation et climatisation",
       providers: 23,
       avgPrice: "40-70€/h",
-      color: "bg-indigo-100 text-indigo-800"
     },
     {
       name: "Réparation Maison",
-      icon: Home,
+      image: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8aGFuZGltYW58ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Services de bricoleur généraux, petites réparations et entretien de maison",
       providers: 41,
       avgPrice: "20-30€/h",
-      color: "bg-teal-100 text-teal-800"
     },
     {
       name: "Serrurier",
-      icon: Shield,
+      image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8bG9ja3NtaXRofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=80",
       description: "Installation de serrures, coupe de clés et services d'urgence ouverture de porte",
       providers: 18,
       avgPrice: "30-50€/h",
-      color: "bg-gray-100 text-gray-800"
     },
     {
       name: "Coiffeur",
-      icon: Scissors,
+      image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8aGFpcmRyZXNzZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
       description: "Coupes de cheveux, coiffure, coloration et soins esthétiques à domicile",
       providers: 31,
       avgPrice: "25-40€/h",
-      color: "bg-pink-100 text-pink-800"
+    },
+    {
+      name: "Jardinier",
+      image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8Z2FyZGVuZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
+      description: "Entretien de jardin, taille de haies, tonte de pelouse et aménagement paysager.",
+      providers: 22,
+      avgPrice: "20-35€/h",
+    },
+    {
+      name: "Informatique",
+      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixid=M3w5MTY4fDB8MHxzZWFyY2h8Mnx8aXR8ZW58MHx8MHx8&auto=format&fit=crop&w=400&q=80",
+      description: "Assistance informatique, dépannage, installation de logiciels et maintenance de matériel.",
+      providers: 27,
+      avgPrice: "30-60€/h",
     }
   ];
 
@@ -123,8 +127,16 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
   return (
     <div className="min-h-screen bg-white pt-20">
       {/* Header Section */}
-      <section className="bg-gradient-to-r from-[#000080] to-[#001a99] text-white py-16 animate-fade-in">
-        <div className="max-w-7xl mx-auto px-4">
+      <section
+        className="text-white py-16 animate-fade-in"
+        style={{
+          backgroundImage: 'url(https://i.pinimg.com/736x/cc/35/ba/cc35baaadabca6dd0d5fceca0260363d.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 bg-black/40 rounded-2xl py-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">Catégories de Services</h1>
           <p className="text-xl opacity-90 text-center mb-8">
             Choisissez parmi notre large gamme de services professionnels
@@ -175,54 +187,56 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredCategories.map((category, index) => {
-                const IconComponent = category.icon;
-                return (
-                  <Card 
-                    key={category.name}
-                    className="hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 border-[#000080]/10 shadow-lg bg-white hover:scale-105 hover:border-[#000080]/30 animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                    onClick={() => onNavigate('service-detail')}
-                  >
-                    <CardHeader className="pb-4 bg-gradient-to-r from-[#FFF4EA] to-white">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center">
-                          <div className="p-3 bg-gradient-to-br from-[#000080] to-[#001a99] rounded-lg mr-4">
-                            <IconComponent className="w-8 h-8 text-[#FFF4EA]" />
-                          </div>
-                          <CardTitle className="text-xl text-[#000080]">{category.name}</CardTitle>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+              {filteredCategories.map((category, index) => (
+                <div
+                  key={category.name}
+                  className="group relative rounded-3xl overflow-hidden shadow-xl bg-white hover:scale-[1.03] transition-transform duration-500 cursor-pointer animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                  onClick={() => onNavigate('service-detail')}
+                >
+                  <div className="relative h-56 w-full overflow-hidden">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                    <div className="absolute top-4 right-4 bg-white/80 rounded-full px-4 py-1 text-xs font-semibold text-[#000080] shadow">
+                      {category.providers} prestataires
+                    </div>
+                  </div>
+                  <div className="p-6 flex flex-col gap-2">
+                    <h3 className="text-2xl font-bold text-[#000080] mb-1 group-hover:text-blue-700 transition-colors duration-300">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-600 mb-2 text-base leading-relaxed min-h-[56px]">
+                      {category.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="text-sm text-gray-500">
+                        <span>À partir de</span>
+                        <div className="font-semibold text-lg text-gray-900">
+                          {category.avgPrice}
                         </div>
-                        <Badge className="bg-[#000080] text-[#FFF4EA] hover:bg-[#001a99]">
-                          {category.providers} prestataires
-                        </Badge>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 mb-4 text-base leading-relaxed">
-                        {category.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-500">
-                          <span>À partir de</span>
-                          <div className="font-semibold text-lg text-gray-900">
-                            {category.avgPrice}
-                          </div>
-                        </div>
-                        <Button 
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
-                          onClick={(e: React.MouseEvent) => {
-                            e.stopPropagation();
-                            onNavigate('service-detail');
-                          }}
-                        >
-                          Voir les Prestataires
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                      <Button
+                        className="bg-gradient-to-r from-[#000080] to-[#001a99] hover:from-[#001a99] hover:to-[#000080] text-white shadow-lg px-5 py-2 rounded-xl text-base font-semibold transition-all duration-300"
+                        onClick={(e: React.MouseEvent) => {
+                          e.stopPropagation();
+                          onNavigate('service-detail');
+                        }}
+                      >
+                        Voir les Prestataires
+                      </Button>
+                    </div>
+                  </div>
+                  {/* Animation de halo moderne */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute -inset-8 rounded-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-br from-blue-200 via-blue-100 to-transparent blur-2xl"></div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
           {/* Ajout d'une section d'information */}
