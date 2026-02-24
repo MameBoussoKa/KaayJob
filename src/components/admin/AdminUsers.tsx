@@ -278,7 +278,7 @@ export function AdminUsers() {
         <CardHeader>
           <CardTitle>Liste des utilisateurs</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-h-96 overflow-y-auto">
           <Table>
             <TableHeader>
               <TableRow>

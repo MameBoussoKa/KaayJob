@@ -243,7 +243,7 @@ export function AdminServices() {
         <CardHeader>
           <CardTitle>Liste des services</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-h-96 overflow-y-auto">
           <Table>
             <TableHeader>
               <TableRow>

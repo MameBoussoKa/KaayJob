@@ -1,4 +1,4 @@
-import { Users, Briefcase, Calendar, TrendingUp, Activity } from "lucide-react";
+import { Users, Briefcase, Calendar, Star, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 
@@ -47,73 +47,51 @@ function StatCard({
   );
 }
 
-// Données simulées pour l'exemple
+// Données simulées
 const recentBookings = [
   {
     id: 1,
     client: "Mamadou Diallo",
     service: "Réparation Smartphone",
-    status: "confirmé",
     date: "2024-02-24",
+    time: "10:00",
+    status: "confirmé",
   },
   {
     id: 2,
     client: "Fatou Sow",
     service: "Ménage à domicile",
-    status: "en attente",
     date: "2024-02-23",
+    time: "14:00",
+    status: "en_attente",
   },
   {
     id: 3,
     client: "Aliou Kanté",
     service: "Cours de mathématiques",
-    status: "confirmé",
     date: "2024-02-23",
-  },
-  {
-    id: 4,
-    client: "Mariama Bah",
-    service: "Coiffure",
-    status: "annulé",
-    date: "2024-02-22",
-  },
-  {
-    id: 5,
-    client: "Ousmane Faye",
-    service: "Plomberie",
-    status: "confirmé",
-    date: "2024-02-22",
+    time: "09:00",
+    status: "terminé",
   },
 ];
 
-const topServices = [
-  { name: "Réparation Smartphone", bookings: 145 },
-  { name: "Ménage à domicile", bookings: 128 },
-  { name: "Cours particuliers", bookings: 98 },
-  { name: "Coiffure", bookings: 87 },
+const myServices = [
+  { name: "Réparation Smartphone", bookings: 45, active: true },
+  { name: "Réparation Ordinateur", bookings: 23, active: true },
+  { name: "Dépannage réseau", bookings: 12, active: false },
 ];
 
-export function AdminDashboard() {
+export function PrestataireDashboard() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "confirmé":
+        return <Badge className="bg-green-100 text-green-800">Confirmé</Badge>;
+      case "en_attente":
         return (
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-            Confirmé
-          </Badge>
+          <Badge className="bg-yellow-100 text-yellow-800">En attente</Badge>
         );
-      case "en attente":
-        return (
-          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
-            En attente
-          </Badge>
-        );
-      case "annulé":
-        return (
-          <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
-            Annulé
-          </Badge>
-        );
+      case "terminé":
+        return <Badge className="bg-blue-100 text-blue-800">Terminé</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -124,37 +102,56 @@ export function AdminDashboard() {
       {/* En-tête */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#000080]">
-          Tableau de bord Admin
+          Bienvenue, Aliou !
         </h1>
-        <p className="text-gray-500 mt-1">
-          Bienvenue dans votre espace d'administration
-        </p>
+        <p className="text-gray-500 mt-1">Gérez vos services et réservations</p>
       </div>
 
+      {/* Badge Premium */}
+      <Card className="mb-8 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-bold text-lg">Plan Premium</p>
+              <p className="text-yellow-100">Expire le 15 Mars 2024</p>
+            </div>
+            <Badge className="bg-white text-yellow-600 font-bold">Actif</Badge>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard
-          title="Utilisateurs"
-          value={1248}
-          change="+12% ce mois"
+          title="Réservations totales"
+          value={80}
+          change="+15% ce mois"
           trend="up"
-          icon={Users}
+          icon={Calendar}
           color="bg-blue-500"
         />
         <StatCard
           title="Services actifs"
-          value={89}
-          change="+5 ce mois"
+          value={5}
+          change="+2 ce mois"
           trend="up"
           icon={Briefcase}
           color="bg-green-500"
         />
         <StatCard
-          title="Réservations"
-          value={456}
-          change="+18% ce mois"
+          title="Note moyenne"
+          value={4.8}
+          change="+0.2 ce mois"
           trend="up"
-          icon={Calendar}
+          icon={Star}
+          color="bg-yellow-500"
+        />
+        <StatCard
+          title="Clients satisfaits"
+          value={62}
+          change="+8 ce mois"
+          trend="up"
+          icon={Users}
           color="bg-purple-500"
         />
       </div>
@@ -164,11 +161,11 @@ export function AdminDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold flex items-center gap-2">
-              <Activity size={20} className="text-[#000080]" />
+              <Calendar size={20} className="text-[#000080]" />
               Réservations récentes
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-h-80 overflow-y-auto">
             <div className="space-y-4">
               {recentBookings.map((booking) => (
                 <div
@@ -180,10 +177,12 @@ export function AdminDashboard() {
                       {booking.client}
                     </p>
                     <p className="text-sm text-gray-500">{booking.service}</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {booking.date} à {booking.time}
+                    </p>
                   </div>
                   <div className="text-right">
                     {getStatusBadge(booking.status)}
-                    <p className="text-sm text-gray-500 mt-1">{booking.date}</p>
                   </div>
                 </div>
               ))}
@@ -191,41 +190,33 @@ export function AdminDashboard() {
           </CardContent>
         </Card>
 
-        {/* Services populaires */}
+        {/* Mes services */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold flex items-center gap-2">
               <Briefcase size={20} className="text-[#000080]" />
-              Services les plus demandés
+              Mes services
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-h-80 overflow-y-auto">
             <div className="space-y-4">
-              {topServices.map((service, index) => (
+              {myServices.map((service, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[#000080] text-white rounded-full flex items-center justify-center text-sm font-bold">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        {service.name}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {service.bookings} réservations
-                      </p>
-                    </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{service.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {service.bookings} réservations
+                    </p>
                   </div>
+                  <Badge variant={service.active ? "default" : "secondary"}>
+                    {service.active ? "Actif" : "Inactif"}
+                  </Badge>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-4">
-              Note: Les paiements sont gérés directement entre client et
-              prestataire
-            </p>
           </CardContent>
         </Card>
       </div>

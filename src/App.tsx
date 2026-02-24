@@ -17,6 +17,16 @@ import { AdminServices } from "./components/admin/AdminServices";
 import { AdminBookings } from "./components/admin/AdminBookings";
 import { AdminAnalytics } from "./components/admin/AdminAnalytics";
 import { AdminSettings } from "./components/admin/AdminSettings";
+import { AdminSubscriptions } from "./components/admin/AdminSubscriptions";
+import { AdminPayments } from "./components/admin/AdminPayments";
+
+// Prestataire imports
+import { PrestataireSidebar } from "./components/prestataire/PrestataireSidebar";
+import { PrestataireDashboard } from "./components/prestataire/PrestataireDashboard";
+import { PrestataireServices } from "./components/prestataire/PrestataireServices";
+import { PrestataireBookings } from "./components/prestataire/PrestataireBookings";
+import { PrestataireProfile } from "./components/prestataire/PrestataireProfile";
+import { PrestataireSettings } from "./components/prestataire/PrestataireSettings";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -40,8 +50,30 @@ export default function App() {
         return <AdminAnalytics />;
       case "admin-settings":
         return <AdminSettings />;
+      case "admin-subscriptions":
+        return <AdminSubscriptions />;
+      case "admin-payments":
+        return <AdminPayments />;
       default:
         return <AdminDashboard />;
+    }
+  };
+
+  // Rendu des pages prestataire
+  const renderPrestatairePage = () => {
+    switch (currentPage) {
+      case "prestataire-dashboard":
+        return <PrestataireDashboard />;
+      case "prestataire-services":
+        return <PrestataireServices />;
+      case "prestataire-bookings":
+        return <PrestataireBookings />;
+      case "prestataire-profile":
+        return <PrestataireProfile />;
+      case "prestataire-settings":
+        return <PrestataireSettings />;
+      default:
+        return <PrestataireDashboard />;
     }
   };
 
@@ -49,6 +81,11 @@ export default function App() {
     // Pages admin
     if (currentPage.startsWith("admin-")) {
       return renderAdminPage();
+    }
+
+    // Pages prestataire
+    if (currentPage.startsWith("prestataire-")) {
+      return renderPrestatairePage();
     }
 
     // Pages client
@@ -79,6 +116,14 @@ export default function App() {
       {currentPage.startsWith("admin-") ? (
         <>
           <AdminSidebar currentPage={currentPage} onNavigate={handleNavigate} />
+          {renderCurrentPage()}
+        </>
+      ) : currentPage.startsWith("prestataire-") ? (
+        <>
+          <PrestataireSidebar
+            currentPage={currentPage}
+            onNavigate={handleNavigate}
+          />
           {renderCurrentPage()}
         </>
       ) : (

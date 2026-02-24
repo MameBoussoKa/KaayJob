@@ -260,7 +260,7 @@ export function AdminBookings() {
         <CardHeader>
           <CardTitle>Liste des réservations</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="max-h-96 overflow-y-auto">
           <p className="text-sm text-gray-500 mb-4">
             Note: Les paiements sont gérés directement entre le client et le
             prestataire
