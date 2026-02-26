@@ -10,6 +10,15 @@ interface ServiceCategoriesPageProps {
 }
 
 export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps) {
+  // Images for each service
+  const serviceImages = [
+    "https://i.pinimg.com/736x/4d/3d/a8/4d3da898a7f0383572935a16f1e6df3a.jpg", // Plombier
+    "https://i.pinimg.com/1200x/87/51/6c/87516c2648221145e8984eead29ca6ef.jpg", // Électricien
+    "https://i.pinimg.com/736x/bf/e3/5b/bfe35bfafa3f17a186b7702650000a8d.jpg", // Peintre
+    "https://i.pinimg.com/1200x/90/74/7e/90747e3cbe738c49873b37d8a827aa52.jpg", // Nettoyeur
+    "https://i.pinimg.com/1200x/d4/b8/bc/d4b8bc110673bd134252464cf8cbb486.jpg", // Menuisier
+    "https://i.pinimg.com/736x/db/74/d1/db74d1e975d9458bcafece423de52faa.jpg", // Mécanicien
+  ];
   const categories = [
     {
       name: "Plombier",
@@ -178,6 +187,8 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredCategories.map((category, index) => {
                 const IconComponent = category.icon;
+                // Map image to service by index (for demo, first 6 services)
+                const imageUrl = serviceImages[index] || serviceImages[0];
                 return (
                   <Card 
                     key={category.name}
@@ -196,6 +207,10 @@ export function ServiceCategoriesPage({ onNavigate }: ServiceCategoriesPageProps
                         <Badge className="bg-[#000080] text-[#FFF4EA] hover:bg-[#001a99]">
                           {category.providers} prestataires
                         </Badge>
+                      </div>
+                      {/* Service image */}
+                      <div className="w-full h-48 rounded-xl overflow-hidden mb-2 shadow-md">
+                        <img src={imageUrl} alt={category.name + ' image'} className="object-cover w-full h-full" loading="lazy" />
                       </div>
                     </CardHeader>
                     <CardContent>
