@@ -12,9 +12,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'Accueil' },
-    { id: 'categories', label: 'Services' },
-    { id: 'contact', label: 'Contact' },
+    { id: "home", label: "Accueil" },
+    { id: "categories", label: "Services" },
+    { id: "contact", label: "Contact" },
   ];
 
   return (
@@ -22,10 +22,10 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo - Left */}
-          <div 
+          <div
             className="flex items-center gap-3 cursor-pointer group"
             onClick={() => {
-              onNavigate('home');
+              onNavigate("home");
               setIsMenuOpen(false);
             }}
           >
@@ -42,9 +42,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
                 className={`px-4 py-2 font-semibold text-sm transition-all duration-300 rounded-lg ${
-                  currentPage === item.id 
-                    ? 'text-[#000080] bg-[#FFF4EA]' 
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-[#000080]'
+                  currentPage === item.id
+                    ? "text-[#000080] bg-[#FFF4EA]"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-[#000080]"
                 }`}
               >
                 {item.label}
@@ -55,13 +55,25 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => onNavigate('login')}
+              onClick={() => onNavigate("admin-dashboard")}
+              className="hidden md:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm"
+            >
+              Admin
+            </button>
+            <button
+              onClick={() => onNavigate("prestataire-dashboard")}
+              className="hidden md:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm"
+            >
+              Prestataire
+            </button>
+            <button
+              onClick={() => onNavigate("login")}
               className="hidden sm:inline font-semibold text-[#000080] hover:text-blue-700 transition-colors text-sm"
             >
               Connexion
             </button>
             <Button
-              onClick={() => onNavigate('dashboard')}
+              onClick={() => onNavigate("dashboard")}
               className="bg-[#000080] hover:bg-blue-900 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm h-10"
             >
               Espace Client
@@ -92,9 +104,9 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
                   setIsMenuOpen(false);
                 }}
                 className={`block w-full text-left px-4 py-3 font-semibold text-sm transition-colors ${
-                  currentPage === item.id 
-                    ? 'text-[#000080] bg-[#FFF4EA]' 
-                    : 'text-gray-700 hover:bg-gray-100'
+                  currentPage === item.id
+                    ? "text-[#000080] bg-[#FFF4EA]"
+                    : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
                 {item.label}
@@ -102,12 +114,30 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             ))}
             <button
               onClick={() => {
-                onNavigate('login');
+                onNavigate("login");
                 setIsMenuOpen(false);
               }}
               className="block w-full text-left px-4 py-3 font-semibold text-sm text-[#000080] hover:bg-gray-100"
             >
               Connexion
+            </button>
+            <button
+              onClick={() => {
+                onNavigate("admin-dashboard");
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left px-4 py-3 font-semibold text-sm text-[#000080] hover:bg-gray-100"
+            >
+              Administration
+            </button>
+            <button
+              onClick={() => {
+                onNavigate("prestataire-dashboard");
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left px-4 py-3 font-semibold text-sm text-[#000080] hover:bg-gray-100"
+            >
+              Espace Prestataire
             </button>
           </div>
         )}
