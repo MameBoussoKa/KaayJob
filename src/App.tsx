@@ -1,13 +1,33 @@
 import { useState } from "react";
 import { Header } from "./components/Header";
-import { HomePage } from "./components/HomePage";
-import { LoginPage } from "./components/LoginPage";
-import { ServiceCategoriesPage } from "./components/ServiceCategoriesPage";
-import { ServiceDetailPage } from "./components/ServiceDetailPage";
-import { BookingPage } from "./components/BookingPage";
-import { CheckoutPage } from "./components/CheckoutPage";
-import { UserDashboard } from "./components/UserDashboard";
-import { ContactPage } from "./components/ContactPage";
+import { HomePage } from "./components/client/HomePage";
+import { LoginPage } from "./components/client/LoginPage";
+import { ServiceCategoriesPage } from "./components/client/ServiceCategoriesPage";
+import { ServiceProvidersListPage } from "./components/client/ServiceProvidersListPage";
+import { ServiceDetailPage } from "./components/client/ServiceDetailPage";
+import { BookingPage } from "./components/client/BookingPage";
+import { CheckoutPage } from "./components/client/CheckoutPage";
+import { UserDashboard } from "./components/client/UserDashboard";
+import { ContactPage } from "./components/client/ContactPage";
+
+// Admin imports
+import { AdminSidebar } from "./components/admin/AdminSidebar";
+import { AdminDashboard } from "./components/admin/AdminDashboard";
+import { AdminUsers } from "./components/admin/AdminUsers";
+import { AdminServices } from "./components/admin/AdminServices";
+import { AdminBookings } from "./components/admin/AdminBookings";
+import { AdminAnalytics } from "./components/admin/AdminAnalytics";
+import { AdminSettings } from "./components/admin/AdminSettings";
+import { AdminSubscriptions } from "./components/admin/AdminSubscriptions";
+import { AdminPayments } from "./components/admin/AdminPayments";
+
+// Prestataire imports
+import { PrestataireSidebar } from "./components/prestataire/PrestataireSidebar";
+import { PrestataireDashboard } from "./components/prestataire/PrestataireDashboard";
+import { PrestataireServices } from "./components/prestataire/PrestataireServices";
+import { PrestataireBookings } from "./components/prestataire/PrestataireBookings";
+import { PrestataireProfile } from "./components/prestataire/PrestataireProfile";
+import { PrestataireSettings } from "./components/prestataire/PrestataireSettings";
 
 // Admin imports
 import { AdminSidebar } from "./components/admin/AdminSidebar";
@@ -96,6 +116,8 @@ export default function App() {
         return <LoginPage onNavigate={handleNavigate} />;
       case "categories":
         return <ServiceCategoriesPage onNavigate={handleNavigate} />;
+      case "service-providers":
+        return <ServiceProvidersListPage onNavigate={handleNavigate} />;
       case "service-detail":
         return <ServiceDetailPage onNavigate={handleNavigate} />;
       case "booking":
