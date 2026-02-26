@@ -61,6 +61,12 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               Admin
             </button>
             <button
+              onClick={() => onNavigate("prestataire-dashboard")}
+              className="hidden md:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm"
+            >
+              Prestataire
+            </button>
+            <button
               onClick={() => onNavigate("login")}
               className="hidden sm:inline font-semibold text-[#000080] hover:text-blue-700 transition-colors text-sm"
             >
@@ -123,6 +129,15 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
               className="block w-full text-left px-4 py-3 font-semibold text-sm text-[#000080] hover:bg-gray-100"
             >
               Administration
+            </button>
+            <button
+              onClick={() => {
+                onNavigate("prestataire-dashboard");
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left px-4 py-3 font-semibold text-sm text-[#000080] hover:bg-gray-100"
+            >
+              Espace Prestataire
             </button>
           </div>
         )}

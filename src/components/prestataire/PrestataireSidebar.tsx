@@ -1,36 +1,38 @@
 import {
   LayoutDashboard,
-  Users,
   Briefcase,
   Calendar,
+  User,
   Settings,
-  BarChart3,
   LogOut,
   Menu,
   X,
   Crown,
-  CreditCard,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-interface AdminSidebarProps {
+interface PrestataireSidebarProps {
   currentPage: string;
   onNavigate: (page: string) => void;
 }
 
 const menuItems = [
-  { id: "admin-dashboard", label: "Tableau de bord", icon: LayoutDashboard },
-  { id: "admin-users", label: "Utilisateurs", icon: Users },
-  { id: "admin-services", label: "Services", icon: Briefcase },
-  { id: "admin-bookings", label: "Réservations", icon: Calendar },
-  { id: "admin-analytics", label: "Analyses", icon: BarChart3 },
-  { id: "admin-subscriptions", label: "Abonnements", icon: Crown },
-  { id: "admin-payments", label: "Paiements", icon: CreditCard },
-  { id: "admin-settings", label: "Paramètres", icon: Settings },
+  {
+    id: "prestataire-dashboard",
+    label: "Tableau de bord",
+    icon: LayoutDashboard,
+  },
+  { id: "prestataire-services", label: "Mes services", icon: Briefcase },
+  { id: "prestataire-bookings", label: "Réservations", icon: Calendar },
+  { id: "prestataire-profile", label: "Mon profil", icon: User },
+  { id: "prestataire-settings", label: "Paramètres", icon: Settings },
 ];
 
-export function AdminSidebar({ currentPage, onNavigate }: AdminSidebarProps) {
+export function PrestataireSidebar({
+  currentPage,
+  onNavigate,
+}: PrestataireSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -56,7 +58,10 @@ export function AdminSidebar({ currentPage, onNavigate }: AdminSidebarProps) {
           </div>
           <div>
             <span className="text-xl font-bold">KaayJob</span>
-            <p className="text-xs text-blue-300">Administration</p>
+            <p className="text-xs text-blue-300 flex items-center gap-1">
+              <Crown size={12} className="text-yellow-400" />
+              Espace Prestataire
+            </p>
           </div>
         </div>
 
