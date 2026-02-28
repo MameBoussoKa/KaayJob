@@ -4,13 +4,19 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { validateFormField } from "../../lib/validations";
+import { toast } from "sonner";
 
 interface LoginPageProps {
   onNavigate: (page: string) => void;
+  defaultTab?: string;
 }
 
-export function LoginPage({ onNavigate }: LoginPageProps) {
-  const [userType, setUserType] = useState<"customer" | "provider">("customer");
+export function LoginPage({ onNavigate, defaultTab }: LoginPageProps) {
+  const [userType, setUserType] = useState<"customer" | "provider">(
+    defaultTab === "login-provider" ? "provider" : "customer",
+  );
+  const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,12 +25,121 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
     confirmPassword: "",
   });
 
+  // États pour les erreurs de validation
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Validation en temps réel
+    if (touched[field]) {
+      validateFieldRealTime(field, value);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Validation en temps réel d'un champ
+  const validateFieldRealTime = (field: string, value: string): boolean => {
+    let error: string | null = null;
+
+    switch (field) {
+      case "email":
+        error = validateFormField(value, "email", "Email");
+        break;
+      case "password":
+        error = validateFormField(value, "password", "Mot de passe");
+        break;
+      case "name":
+        error = validateFormField(value, "name", "Nom");
+        break;
+      case "phone":
+        error = validateFormField(value, "phone", "Téléphone");
+        break;
+      case "confirmPassword":
+        if (value !== formData.password) {
+          error = "Les mots de passe ne correspondent pas";
+        }
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [field]: error || "" }));
+    return !error;
+  };
+
+  // Gestion de la perte de focus
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    validateFieldRealTime(field, formData[field as keyof typeof formData]);
+  };
+
+  // Valider le formulaire complet
+  const validateForm = (isSignup: boolean): boolean => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    // Validation de l'email
+    const emailError = validateFormField(formData.email, "email", "Email");
+    if (emailError) {
+      newErrors.email = emailError;
+      isValid = false;
+    }
+
+    // Validation du mot de passe
+    const passwordError = validateFormField(
+      formData.password,
+      "password",
+      "Mot de passe",
+    );
+    if (passwordError) {
+      newErrors.password = passwordError;
+      isValid = false;
+    }
+
+    // Validation supplémentaire pour l'inscription
+    if (isSignup) {
+      const nameError = validateFormField(formData.name, "name", "Nom");
+      if (nameError) {
+        newErrors.name = nameError;
+        isValid = false;
+      }
+
+      const phoneError = validateFormField(
+        formData.phone,
+        "phone",
+        "Téléphone",
+      );
+      if (phoneError) {
+        newErrors.phone = phoneError;
+        isValid = false;
+      }
+
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    setTouched({
+      email: true,
+      password: true,
+      name: true,
+      phone: true,
+      confirmPassword: true,
+    });
+
+    return isValid;
+  };
+
+  const handleSubmit = (e: React.FormEvent, isSignup: boolean) => {
     e.preventDefault();
+
+    // Validation avant soumission
+    if (!validateForm(isSignup)) {
+      toast.error("Veuillez corriger les erreurs dans le formulaire");
+      return;
+    }
+
     // Mock authentication - redirect based on user type
     if (userType === "provider") {
       onNavigate("prestataire-dashboard");
@@ -56,7 +171,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
             <Tabs
               defaultValue="customer"
               className="w-full"
-              onValueChange={(value) =>
+              onValueChange={(value: string) =>
                 setUserType(value as "customer" | "provider")
               }
             >
@@ -76,41 +191,58 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
               </TabsList>
 
               <TabsContent value="customer">
-                <Tabs defaultValue="login" className="w-full">
+                <Tabs
+                  defaultValue="login"
+                  className="w-full"
+                  onValueChange={(v) => setActiveTab(v as "login" | "signup")}
+                >
                   <TabsList className="grid w-full grid-cols-2 mb-6">
                     <TabsTrigger value="login">Connexion</TabsTrigger>
                     <TabsTrigger value="signup">S'inscrire</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="login">
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form
+                      onSubmit={(e) => handleSubmit(e, false)}
+                      className="space-y-4"
+                    >
                       <div>
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Email *</Label>
                         <Input
                           id="email"
                           type="email"
-                          placeholder="Entrez votre email"
+                          placeholder="exemple@email.com"
                           value={formData.email}
                           onChange={(e) =>
                             handleInputChange("email", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("email")}
+                          className={`mt-1 text-base ${errors.email && touched.email ? "border-red-500" : ""}`}
                         />
+                        {errors.email && touched.email && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="password">Mot de passe</Label>
+                        <Label htmlFor="password">Mot de passe *</Label>
                         <Input
                           id="password"
                           type="password"
-                          placeholder="Entrez votre mot de passe"
+                          placeholder=" minimum 8 caractères"
                           value={formData.password}
                           onChange={(e) =>
                             handleInputChange("password", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("password")}
+                          className={`mt-1 text-base ${errors.password && touched.password ? "border-red-500" : ""}`}
                         />
+                        {errors.password && touched.password && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.password}
+                          </p>
+                        )}
                       </div>
                       <Button
                         type="submit"
@@ -122,9 +254,12 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                   </TabsContent>
 
                   <TabsContent value="signup">
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form
+                      onSubmit={(e) => handleSubmit(e, true)}
+                      className="space-y-4"
+                    >
                       <div>
-                        <Label htmlFor="name">Nom complet</Label>
+                        <Label htmlFor="name">Nom complet *</Label>
                         <Input
                           id="name"
                           type="text"
@@ -133,51 +268,92 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                           onChange={(e) =>
                             handleInputChange("name", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("name")}
+                          className={`mt-1 text-base ${errors.name && touched.name ? "border-red-500" : ""}`}
                         />
+                        {errors.name && touched.name && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="email-signup">Email</Label>
+                        <Label htmlFor="email-signup">Email *</Label>
                         <Input
                           id="email-signup"
                           type="email"
-                          placeholder="Entrez votre email"
+                          placeholder="exemple@email.com"
                           value={formData.email}
                           onChange={(e) =>
                             handleInputChange("email", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("email")}
+                          className={`mt-1 text-base ${errors.email && touched.email ? "border-red-500" : ""}`}
                         />
+                        {errors.email && touched.email && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="phone">Numéro de téléphone</Label>
+                        <Label htmlFor="phone">Numéro de téléphone *</Label>
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="Entrez votre numéro de téléphone"
+                          placeholder="+221771234567"
                           value={formData.phone}
                           onChange={(e) =>
                             handleInputChange("phone", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("phone")}
+                          className={`mt-1 text-base ${errors.phone && touched.phone ? "border-red-500" : ""}`}
                         />
+                        {errors.phone && touched.phone && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.phone}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="password-signup">Mot de passe</Label>
+                        <Label htmlFor="password-signup">Mot de passe *</Label>
                         <Input
                           id="password-signup"
                           type="password"
-                          placeholder="Créer un mot de passe"
+                          placeholder="Min. 8 caractères (majuscule, minuscule, chiffre)"
                           value={formData.password}
                           onChange={(e) =>
                             handleInputChange("password", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("password")}
+                          className={`mt-1 text-base ${errors.password && touched.password ? "border-red-500" : ""}`}
                         />
+                        {errors.password && touched.password && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.password}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="confirmPassword">
+                          Confirmer le mot de passe *
+                        </Label>
+                        <Input
+                          id="confirmPassword"
+                          type="password"
+                          placeholder="Répétez votre mot de passe"
+                          value={formData.confirmPassword}
+                          onChange={(e) =>
+                            handleInputChange("confirmPassword", e.target.value)
+                          }
+                          onBlur={() => handleBlur("confirmPassword")}
+                          className={`mt-1 text-base ${errors.confirmPassword && touched.confirmPassword ? "border-red-500" : ""}`}
+                        />
+                        {errors.confirmPassword && touched.confirmPassword && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.confirmPassword}
+                          </p>
+                        )}
                       </div>
                       <Button
                         type="submit"
@@ -191,41 +367,60 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
               </TabsContent>
 
               <TabsContent value="provider">
-                <Tabs defaultValue="login" className="w-full">
+                <Tabs
+                  defaultValue="login"
+                  className="w-full"
+                  onValueChange={(v) => setActiveTab(v as "login" | "signup")}
+                >
                   <TabsList className="grid w-full grid-cols-2 mb-6">
                     <TabsTrigger value="login">Connexion</TabsTrigger>
                     <TabsTrigger value="signup">S'inscrire</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="login">
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form
+                      onSubmit={(e) => handleSubmit(e, false)}
+                      className="space-y-4"
+                    >
                       <div>
-                        <Label htmlFor="provider-email">Email</Label>
+                        <Label htmlFor="provider-email">Email *</Label>
                         <Input
                           id="provider-email"
                           type="email"
-                          placeholder="Entrez votre email"
+                          placeholder="exemple@email.com"
                           value={formData.email}
                           onChange={(e) =>
                             handleInputChange("email", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("email")}
+                          className={`mt-1 text-base ${errors.email && touched.email ? "border-red-500" : ""}`}
                         />
+                        {errors.email && touched.email && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="provider-password">Mot de passe</Label>
+                        <Label htmlFor="provider-password">
+                          Mot de passe *
+                        </Label>
                         <Input
                           id="provider-password"
                           type="password"
-                          placeholder="Entrez votre mot de passe"
+                          placeholder=" minimum 8 caractères"
                           value={formData.password}
                           onChange={(e) =>
                             handleInputChange("password", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("password")}
+                          className={`mt-1 text-base ${errors.password && touched.password ? "border-red-500" : ""}`}
                         />
+                        {errors.password && touched.password && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.password}
+                          </p>
+                        )}
                       </div>
                       <Button
                         type="submit"
@@ -237,10 +432,13 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                   </TabsContent>
 
                   <TabsContent value="signup">
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form
+                      onSubmit={(e) => handleSubmit(e, true)}
+                      className="space-y-4"
+                    >
                       <div>
                         <Label htmlFor="provider-name">
-                          Nom de l'entreprise
+                          Nom de l'entreprise *
                         </Label>
                         <Input
                           id="provider-name"
@@ -250,55 +448,96 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
                           onChange={(e) =>
                             handleInputChange("name", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("name")}
+                          className={`mt-1 text-base ${errors.name && touched.name ? "border-red-500" : ""}`}
                         />
+                        {errors.name && touched.name && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="provider-email-signup">Email</Label>
+                        <Label htmlFor="provider-email-signup">Email *</Label>
                         <Input
                           id="provider-email-signup"
                           type="email"
-                          placeholder="Entrez l'email de votre entreprise"
+                          placeholder="exemple@email.com"
                           value={formData.email}
                           onChange={(e) =>
                             handleInputChange("email", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("email")}
+                          className={`mt-1 text-base ${errors.email && touched.email ? "border-red-500" : ""}`}
                         />
+                        {errors.email && touched.email && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <Label htmlFor="provider-phone">
-                          Numéro de téléphone
+                          Numéro de téléphone *
                         </Label>
                         <Input
                           id="provider-phone"
                           type="tel"
-                          placeholder="Entrez le téléphone de votre entreprise"
+                          placeholder="+221771234567"
                           value={formData.phone}
                           onChange={(e) =>
                             handleInputChange("phone", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("phone")}
+                          className={`mt-1 text-base ${errors.phone && touched.phone ? "border-red-500" : ""}`}
                         />
+                        {errors.phone && touched.phone && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.phone}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <Label htmlFor="provider-password-signup">
-                          Mot de passe
+                          Mot de passe *
                         </Label>
                         <Input
                           id="provider-password-signup"
                           type="password"
-                          placeholder="Créer un mot de passe"
+                          placeholder="Min. 8 caractères (majuscule, minuscule, chiffre)"
                           value={formData.password}
                           onChange={(e) =>
                             handleInputChange("password", e.target.value)
                           }
-                          className="mt-1 text-base"
-                          required
+                          onBlur={() => handleBlur("password")}
+                          className={`mt-1 text-base ${errors.password && touched.password ? "border-red-500" : ""}`}
                         />
+                        {errors.password && touched.password && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.password}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="provider-confirmPassword">
+                          Confirmer le mot de passe *
+                        </Label>
+                        <Input
+                          id="provider-confirmPassword"
+                          type="password"
+                          placeholder="Répétez votre mot de passe"
+                          value={formData.confirmPassword}
+                          onChange={(e) =>
+                            handleInputChange("confirmPassword", e.target.value)
+                          }
+                          onBlur={() => handleBlur("confirmPassword")}
+                          className={`mt-1 text-base ${errors.confirmPassword && touched.confirmPassword ? "border-red-500" : ""}`}
+                        />
+                        {errors.confirmPassword && touched.confirmPassword && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.confirmPassword}
+                          </p>
+                        )}
                       </div>
                       <Button
                         type="submit"

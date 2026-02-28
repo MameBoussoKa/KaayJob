@@ -1,8 +1,9 @@
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
-import { Star, MapPin, Clock, ArrowLeft } from "lucide-react";
+import { Star, MapPin, ArrowLeft } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { useEffect, useState } from "react";
 
 interface ServiceProvidersListPageProps {
   onNavigate: (page: string) => void;
@@ -13,6 +14,16 @@ export function ServiceProvidersListPage({
   onNavigate,
   serviceName = "Plombier",
 }: ServiceProvidersListPageProps) {
+  const [categoryId, setCategoryId] = useState<string>("");
+
+  useEffect(() => {
+    // Extraire le category ID de l'URL
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get("category");
+    if (category) {
+      setCategoryId(category);
+    }
+  }, []);
   // Mock data - en production, cela viendrait d'une API
   const providers = [
     {
@@ -111,7 +122,7 @@ export function ServiceProvidersListPage({
               <Card
                 key={provider.id}
                 className="bg-white border-0 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => onNavigate("service-detail")}
+                onClick={() => onNavigate(`service-detail?id=${provider.id}`)}
               >
                 <CardContent className="p-6">
                   <div className="flex gap-4">
@@ -161,7 +172,7 @@ export function ServiceProvidersListPage({
                           className="bg-blue-600 hover:bg-blue-700"
                           onClick={(e: React.MouseEvent) => {
                             e.stopPropagation();
-                            onNavigate("service-detail");
+                            onNavigate(`service-detail?id=${provider.id}`);
                           }}
                         >
                           Voir le profil

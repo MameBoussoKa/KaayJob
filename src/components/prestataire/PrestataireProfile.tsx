@@ -11,8 +11,133 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Badge } from "../ui/badge";
+import { validateFormField } from "../../lib/validations";
+import { toast } from "sonner";
 
 export function PrestataireProfile() {
+  const [formData, setFormData] = useState({
+    firstName: "Aliou",
+    lastName: "Kanté",
+    email: "aliou.kante@email.com",
+    phone: "+221 77 123 45 67",
+    address: "Dakar, Senegal",
+    bio: "Technicien informatique avec 5 ans d'expérience. Spécialisé en réparation smartphone et ordinateur.",
+  });
+
+  // États pour les erreurs de validation
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Validation en temps réel
+    if (touched[field]) {
+      validateFieldRealTime(field, value);
+    }
+  };
+
+  // Validation en temps réel d'un champ
+  const validateFieldRealTime = (field: string, value: string): boolean => {
+    let error: string | null = null;
+
+    switch (field) {
+      case "email":
+        error = validateFormField(value, "email", "Email");
+        break;
+      case "phone":
+        error = validateFormField(value, "phone", "Téléphone");
+        break;
+      case "firstName":
+      case "lastName":
+        error = validateFormField(
+          value,
+          "name",
+          field === "firstName" ? "Prénom" : "Nom",
+        );
+        break;
+      case "address":
+        error = validateFormField(value, "address", "Adresse");
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [field]: error || "" }));
+    return !error;
+  };
+
+  // Gestion de la perte de focus
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    validateFieldRealTime(field, formData[field as keyof typeof formData]);
+  };
+
+  // Valider le formulaire complet
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    const firstNameError = validateFormField(
+      formData.firstName,
+      "name",
+      "Prénom",
+    );
+    if (firstNameError) {
+      newErrors.firstName = firstNameError;
+      isValid = false;
+    }
+
+    const lastNameError = validateFormField(formData.lastName, "name", "Nom");
+    if (lastNameError) {
+      newErrors.lastName = lastNameError;
+      isValid = false;
+    }
+
+    const emailError = validateFormField(formData.email, "email", "Email");
+    if (emailError) {
+      newErrors.email = emailError;
+      isValid = false;
+    }
+
+    const phoneError = validateFormField(formData.phone, "phone", "Téléphone");
+    if (phoneError) {
+      newErrors.phone = phoneError;
+      isValid = false;
+    }
+
+    const addressError = validateFormField(
+      formData.address,
+      "address",
+      "Adresse",
+    );
+    if (addressError) {
+      newErrors.address = addressError;
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    setTouched({
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
+      address: true,
+      bio: true,
+    });
+
+    return isValid;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      toast.error("Veuillez corriger les erreurs dans le formulaire");
+      return;
+    }
+
+    toast.success("Profil mis à jour avec succès !");
+  };
+
   return (
     <div className="p-6 lg:p-8 lg:ml-64">
       {/* En-tête */}
@@ -52,44 +177,111 @@ export function PrestataireProfile() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="firstName">Prénom</Label>
-                <Input id="firstName" defaultValue="Aliou" />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="firstName">Prénom *</Label>
+                  <Input
+                    id="firstName"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                    onBlur={() => handleBlur("firstName")}
+                    className={
+                      errors.firstName && touched.firstName
+                        ? "border-red-500"
+                        : ""
+                    }
+                  />
+                  {errors.firstName && touched.firstName && (
+                    <p className="text-red-500 text-sm">{errors.firstName}</p>
+                  )}
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="lastName">Nom *</Label>
+                  <Input
+                    id="lastName"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
+                    onBlur={() => handleBlur("lastName")}
+                    className={
+                      errors.lastName && touched.lastName
+                        ? "border-red-500"
+                        : ""
+                    }
+                  />
+                  {errors.lastName && touched.lastName && (
+                    <p className="text-red-500 text-sm">{errors.lastName}</p>
+                  )}
+                </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="lastName">Nom</Label>
-                <Input id="lastName" defaultValue="Kanté" />
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  onBlur={() => handleBlur("email")}
+                  className={
+                    errors.email && touched.email ? "border-red-500" : ""
+                  }
+                />
+                {errors.email && touched.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
               </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                defaultValue="aliou.kante@email.com"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Téléphone</Label>
-              <Input id="phone" defaultValue="+221 77 123 45 67" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="address">Adresse</Label>
-              <Input id="address" defaultValue="Dakar, Senegal" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="bio">Biographie</Label>
-              <textarea
-                id="bio"
-                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                defaultValue="Technicien informatique avec 5 ans d'expérience. Spécialisé en réparation smartphone et ordinateur."
-              />
-            </div>
-            <Button className="bg-[#000080] hover:bg-blue-900">
-              <Save size={16} className="mr-2" />
-              Enregistrer
-            </Button>
+              <div className="grid gap-2">
+                <Label htmlFor="phone">Téléphone *</Label>
+                <Input
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange("phone", e.target.value)}
+                  onBlur={() => handleBlur("phone")}
+                  className={
+                    errors.phone && touched.phone ? "border-red-500" : ""
+                  }
+                />
+                {errors.phone && touched.phone && (
+                  <p className="text-red-500 text-sm">{errors.phone}</p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="address">Adresse *</Label>
+                <Input
+                  id="address"
+                  value={formData.address}
+                  onChange={(e) => handleInputChange("address", e.target.value)}
+                  onBlur={() => handleBlur("address")}
+                  className={
+                    errors.address && touched.address ? "border-red-500" : ""
+                  }
+                />
+                {errors.address && touched.address && (
+                  <p className="text-red-500 text-sm">{errors.address}</p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="bio">Biographie</Label>
+                <textarea
+                  id="bio"
+                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  value={formData.bio}
+                  onChange={(e) => handleInputChange("bio", e.target.value)}
+                  maxLength={500}
+                />
+                <p className="text-xs text-gray-500 text-right">
+                  {formData.bio.length}/500
+                </p>
+              </div>
+              <Button type="submit" className="bg-[#000080] hover:bg-blue-900">
+                <Save size={16} className="mr-2" />
+                Enregistrer
+              </Button>
+            </form>
           </CardContent>
         </Card>
 

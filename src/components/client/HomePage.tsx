@@ -8,81 +8,121 @@ interface HomePageProps {
   onNavigate: (page: string) => void;
 }
 
+// Type definitions
+interface Category {
+  name: string;
+  image: string;
+  description: string;
+  id: string;
+}
+
+interface Provider {
+  name: string;
+  service: string;
+  rating: number;
+  reviews: number;
+  image: string;
+  price: string;
+  id: string;
+}
+
 // Services with authentic African images
-const categories = [
-  { 
-    name: "Plomberie", 
-    image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&q=80&crop=smart",
-    description: "Réparation et installation" 
+const categories: Category[] = [
+  {
+    name: "Plomberie",
+    image:
+      "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&q=80&crop=smart",
+    description: "Réparation et installation",
+    id: "plomberie",
   },
-  { 
-    name: "Électricien", 
-    image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&q=80&crop=smart",
-    description: "Travaux électriques" 
+  {
+    name: "Électricien",
+    image:
+      "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&q=80&crop=smart",
+    description: "Travaux électriques",
+    id: "electricien",
   },
-  { 
-    name: "Peintre", 
-    image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=80&crop=smart",
-    description: "Peinture intérieure" 
+  {
+    name: "Peintre",
+    image:
+      "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=80&crop=smart",
+    description: "Peinture intérieure",
+    id: "peintre",
   },
-  { 
-    name: "Nettoyeur", 
-    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80&crop=smart",
-    description: "Nettoyage professionnel" 
+  {
+    name: "Nettoyeur",
+    image:
+      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80&crop=smart",
+    description: "Nettoyage professionnel",
+    id: "nettoyeur",
   },
-  { 
-    name: "Menuisier", 
-    image: "https://images.unsplash.com/photo-1611486212355-d276af4581c0?w=400&q=80&crop=smart",
-    description: "Menuiserie sur mesure" 
+  {
+    name: "Menuisier",
+    image:
+      "https://images.unsplash.com/photo-1611486212355-d276af4581c0?w=400&q=80&crop=smart",
+    description: "Menuiserie sur mesure",
+    id: "menuisier",
   },
-  { 
-    name: "Mécanicien", 
-    image: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=400&q=80&crop=smart",
-    description: "Réparation automobile" 
+  {
+    name: "Mécanicien",
+    image:
+      "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=400&q=80&crop=smart",
+    description: "Réparation automobile",
+    id: "mecanicien",
   },
 ];
 
 // Featured providers with carousel - African professionals
-const featuredProviders = [
+const featuredProviders: Provider[] = [
   {
     name: "Kwame Osei",
     service: "Plombier",
     rating: 4.8,
     reviews: 156,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
-    price: "25€/h"
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+    price: "25€/h",
+    id: "provider-1",
   },
   {
     name: "Amina Diallo",
-    service: "Électricien", 
+    service: "Électricien",
     rating: 4.9,
     reviews: 203,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
-    price: "30€/h"
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+    price: "30€/h",
+    id: "provider-2",
   },
   {
     name: "Ibrahim Sow",
     service: "Peintre",
     rating: 4.7,
     reviews: 89,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
-    price: "20€/h"
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+    price: "20€/h",
+    id: "provider-3",
   },
   {
     name: "Fatoumata Ba",
     service: "Nettoyeur",
     rating: 4.9,
     reviews: 234,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
-    price: "18€/h"
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+    price: "18€/h",
+    id: "provider-4",
   },
   {
     name: "Kofi Mensah",
     service: "Menuisier",
     rating: 4.6,
     reviews: 121,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
-    price: "35€/h"
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+    price: "35€/h",
+    id: "provider-5",
   },
 ];
 
@@ -91,18 +131,20 @@ const steps = [
   {
     step: "1",
     title: "Rechercher",
-    description: "Trouvez le service dont vous avez besoin auprès de nos prestataires"
+    description:
+      "Trouvez le service dont vous avez besoin auprès de nos prestataires",
   },
   {
-    step: "2", 
+    step: "2",
     title: "Réserver",
-    description: "Planifiez un rendez-vous à l'heure qui vous convient"
+    description: "Planifiez un rendez-vous à l'heure qui vous convient",
   },
   {
     step: "3",
     title: "Obtenir le Service",
-    description: "Profitez d'un service de qualité par des professionnels vérifiés"
-  }
+    description:
+      "Profitez d'un service de qualité par des professionnels vérifiés",
+  },
 ];
 
 export function HomePage({ onNavigate }: HomePageProps) {
@@ -116,10 +158,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
     return () => clearInterval(timer);
   }, []);
 
-  const getVisibleProviders = () => {
-    const providers = [];
+  const getVisibleProviders = (): Provider[] => {
+    const providers: Provider[] = [];
     for (let i = 0; i < 3; i++) {
-      providers.push(featuredProviders[(carouselIndex + i) % featuredProviders.length]);
+      providers.push(
+        featuredProviders[(carouselIndex + i) % featuredProviders.length],
+      );
     }
     return providers;
   };
@@ -134,8 +178,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
           <div
             className="w-full h-full object-cover bg-cover bg-center"
             style={{
-              backgroundImage: "url('https://i.pinimg.com/1200x/4d/5d/e8/4d5de82c946cd58e5f9dc7f723326633.jpg')",
-              backgroundAttachment: "fixed"
+              backgroundImage:
+                "url('https://i.pinimg.com/1200x/4d/5d/e8/4d5de82c946cd58e5f9dc7f723326633.jpg')",
+              backgroundAttachment: "fixed",
             }}
           />
           {/* Black overlay */}
@@ -148,15 +193,21 @@ export function HomePage({ onNavigate }: HomePageProps) {
           <div className="text-center space-y-6 max-w-4xl animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Trouvez les Meilleurs
-              <span className="text-[#FFF4EA] block mt-2">Prestataires Près de Vous</span>
+              <span className="text-[#FFF4EA] block mt-2">
+                Prestataires Près de Vous
+              </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-100 mb-8 leading-relaxed">
-              Connectez-vous avec des professionnels de confiance pour tous vos besoins
+              Connectez-vous avec des professionnels de confiance pour tous vos
+              besoins
             </p>
           </div>
 
           {/* Modern Search Bar */}
-          <div className="mt-12 w-full max-w-2xl px-4 animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <div
+            className="mt-12 w-full max-w-2xl px-4 animate-slide-up"
+            style={{ animationDelay: "0.2s" }}
+          >
             <div className="bg-white rounded-2xl shadow-2xl p-2 flex items-center gap-2 group hover:shadow-3xl transition-all duration-300">
               <Search className="w-6 h-6 text-[#000080] ml-4 group-hover:text-blue-700 transition-colors" />
               <Input
@@ -167,7 +218,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Button
-                onClick={() => onNavigate('categories')}
+                onClick={() => onNavigate("categories")}
                 className="bg-[#000080] hover:bg-blue-900 text-white font-bold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl mr-1"
               >
                 Chercher
@@ -202,8 +253,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 key={index}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer"
                 style={{
-                  animation: `scale-in 0.6s ease-out ${index * 0.1}s both`
+                  animation: `scale-in 0.6s ease-out ${index * 0.1}s both`,
                 }}
+                onClick={() =>
+                  onNavigate(`service-providers?category=${category.id}`)
+                }
               >
                 {/* Image Container */}
                 <div className="relative h-64 overflow-hidden">
@@ -218,7 +272,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 {/* Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                  <p className="text-sm text-gray-200 mb-4">{category.description}</p>
+                  <p className="text-sm text-gray-200 mb-4">
+                    {category.description}
+                  </p>
                   <div className="flex items-center gap-2 text-[#FFF4EA] group-hover:translate-x-2 transition-transform">
                     <span className="text-sm font-semibold">Découvrir</span>
                     <ArrowRight className="w-4 h-4" />
@@ -251,7 +307,10 @@ export function HomePage({ onNavigate }: HomePageProps) {
               {getVisibleProviders().map((provider, index) => (
                 <div
                   key={index}
-                  className="group animate-fade-in bg-gradient-to-br from-white to-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+                  className="group animate-fade-in bg-gradient-to-br from-white to-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer"
+                  onClick={() => {
+                    onNavigate(`service-detail?id=${provider.id}`);
+                  }}
                 >
                   {/* Provider Image */}
                   <div className="relative h-56 overflow-hidden">
@@ -261,14 +320,20 @@ export function HomePage({ onNavigate }: HomePageProps) {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-4 right-4 bg-[#FFF4EA] px-3 py-1 rounded-full shadow-lg">
-                      <span className="font-bold text-[#000080]">{provider.price}</span>
+                      <span className="font-bold text-[#000080]">
+                        {provider.price}
+                      </span>
                     </div>
                   </div>
 
                   {/* Info */}
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-[#000080] mb-1">{provider.name}</h3>
-                    <p className="text-gray-600 font-medium mb-4">{provider.service}</p>
+                    <h3 className="text-xl font-bold text-[#000080] mb-1">
+                      {provider.name}
+                    </h3>
+                    <p className="text-gray-600 font-medium mb-4">
+                      {provider.service}
+                    </p>
 
                     {/* Rating */}
                     <div className="flex items-center gap-2 mb-4">
@@ -276,16 +341,23 @@ export function HomePage({ onNavigate }: HomePageProps) {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-4 h-4 ${i < Math.floor(provider.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                            className={`w-4 h-4 ${i < Math.floor(provider.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
                           />
                         ))}
                       </div>
-                      <span className="font-bold text-[#000080]">{provider.rating}</span>
-                      <span className="text-gray-600 text-sm">({provider.reviews})</span>
+                      <span className="font-bold text-[#000080]">
+                        {provider.rating}
+                      </span>
+                      <span className="text-gray-600 text-sm">
+                        ({provider.reviews})
+                      </span>
                     </div>
 
                     <Button
-                      onClick={() => onNavigate('booking')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onNavigate("booking");
+                      }}
                       className="w-full bg-[#000080] hover:bg-blue-900 text-white font-bold py-2 rounded-lg transition-all duration-300 group-hover:translate-y-0"
                     >
                       Réserver
@@ -301,10 +373,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 <button
                   key={index}
                   onClick={() => setCarouselIndex(index)}
+                  title={`Voir le prestataire ${index + 1}`}
                   className={`h-3 transition-all duration-300 rounded-full ${
                     index === carouselIndex % featuredProviders.length
-                      ? 'bg-[#000080] w-8'
-                      : 'bg-gray-300 w-3 hover:bg-gray-400'
+                      ? "bg-[#000080] w-8"
+                      : "bg-gray-300 w-3 hover:bg-gray-400"
                   }`}
                 />
               ))}
@@ -335,7 +408,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 key={index}
                 className="relative group"
                 style={{
-                  animation: `slide-up 0.6s ease-out ${index * 0.2}s both`
+                  animation: `slide-up 0.6s ease-out ${index * 0.2}s both`,
                 }}
               >
                 {/* Connection line */}
@@ -346,7 +419,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:border-[#FFF4EA] hover:bg-white/20 transition-all duration-300 group-hover:shadow-2xl">
                   {/* Step number */}
                   <div className="w-16 h-16 bg-gradient-to-br from-[#FFF4EA] to-yellow-200 rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
-                    <span className="text-2xl font-bold text-[#000080]">{item.step}</span>
+                    <span className="text-2xl font-bold text-[#000080]">
+                      {item.step}
+                    </span>
                   </div>
 
                   <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
@@ -359,7 +434,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
           {/* CTA Button */}
           <div className="text-center mt-12">
             <Button
-              onClick={() => onNavigate('categories')}
+              onClick={() => onNavigate("categories")}
               className="bg-[#FFF4EA] hover:bg-white text-[#000080] font-bold px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
             >
               Commencer Maintenant
@@ -420,7 +495,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
               },
               {
                 title: "Services",
-                links: ["Tous les Services", "Trouver un Prestataire", "Devenir Partenaire"],
+                links: [
+                  "Tous les Services",
+                  "Trouver un Prestataire",
+                  "Devenir Partenaire",
+                ],
               },
               {
                 title: "Support",
@@ -428,11 +507,17 @@ export function HomePage({ onNavigate }: HomePageProps) {
               },
               {
                 title: "Légal",
-                links: ["Conditions", "Politique de Confidentialité", "Cookies"],
+                links: [
+                  "Conditions",
+                  "Politique de Confidentialité",
+                  "Cookies",
+                ],
               },
             ].map((section, index) => (
               <div key={index}>
-                <h3 className="font-bold text-lg mb-4 text-[#FFF4EA]">{section.title}</h3>
+                <h3 className="font-bold text-lg mb-4 text-[#FFF4EA]">
+                  {section.title}
+                </h3>
                 <ul className="space-y-2">
                   {section.links.map((link, i) => (
                     <li key={i}>
@@ -456,15 +541,17 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 © 2026 KaayJob. Tous droits réservés.
               </p>
               <div className="flex gap-6 mt-4 md:mt-0">
-                {["Facebook", "Instagram", "Twitter", "LinkedIn"].map((social) => (
-                  <a
-                    key={social}
-                    href="#"
-                    className="text-gray-300 hover:text-[#FFF4EA] transition-colors"
-                  >
-                    {social}
-                  </a>
-                ))}
+                {["Facebook", "Instagram", "Twitter", "LinkedIn"].map(
+                  (social) => (
+                    <a
+                      key={social}
+                      href="#"
+                      className="text-gray-300 hover:text-[#FFF4EA] transition-colors"
+                    >
+                      {social}
+                    </a>
+                  ),
+                )}
               </div>
             </div>
           </div>

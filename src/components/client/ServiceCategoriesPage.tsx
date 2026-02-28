@@ -289,7 +289,7 @@ export function ServiceCategoriesPage({
                 size="lg"
                 variant="outline"
                 className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 text-lg"
-                onClick={() => onNavigate("login")}
+                onClick={() => onNavigate("login-provider")}
               >
                 Devenir Prestataire
               </Button>

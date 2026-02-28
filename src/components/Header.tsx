@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Logo } from "./Logo";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Bell, Home, Phone, User } from "lucide-react";
 import { useState } from "react";
 
 interface HeaderProps {
@@ -10,16 +10,11 @@ interface HeaderProps {
 
 export function Header({ currentPage, onNavigate }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const navItems = [
-    { id: "home", label: "Accueil" },
-    { id: "categories", label: "Services" },
-    { id: "contact", label: "Contact" },
-  ];
+  const [notificationCount] = useState(3);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-12œxl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo - Left */}
           <div
@@ -30,54 +25,95 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             }}
           >
             <Logo />
-            <span className="text-xl font-bold bg-gradient-to-r from-[#000080] to-blue-700 bg-clip-text text-transparent">
-              KaayJob
-            </span>
+            <span className="text-xl font-bold text-[#000080]">KaayJob</span>
           </div>
 
           {/* Desktop Menu - Center */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => onNavigate(item.id)}
-                className={`px-4 py-2 font-semibold text-sm transition-all duration-300 rounded-lg ${
-                  currentPage === item.id
-                    ? "text-[#000080] bg-[#FFF4EA]"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-[#000080]"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+          <nav className="hidden md:flex items-center gap-2 flex-1 justify-center">
+            {/* Home Icon */}
+            <button
+              onClick={() => onNavigate("home")}
+              className={`p-2 transition-all duration-300 rounded-lg ${
+                currentPage === "home"
+                  ? "text-[#000080] bg-[#FFF4EA]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#000080]"
+              }`}
+              title="Accueil"
+            >
+              <Home size={20} />
+            </button>
+
+            {/* Services - Text */}
+            <button
+              onClick={() => onNavigate("categories")}
+              className={`px-4 py-2 font-semibold text-sm transition-all duration-300 rounded-lg ${
+                currentPage === "categories"
+                  ? "text-[#000080] bg-[#FFF4EA]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#000080]"
+              }`}
+            >
+              Services
+            </button>
+
+            {/* Phone Icon */}
+            <button
+              onClick={() => onNavigate("contact")}
+              className={`p-2 transition-all duration-300 rounded-lg ${
+                currentPage === "contact"
+                  ? "text-[#000080] bg-[#FFF4EA]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#000080]"
+              }`}
+              title="Contact"
+            >
+              <Phone size={20} />
+            </button>
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 ml-4">
+            {/* Admin */}
             <button
               onClick={() => onNavigate("admin-dashboard")}
-              className="hidden md:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm"
+              className="hidden lg:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm px-3 py-2 hover:bg-gray-100 rounded-lg"
             >
               Admin
             </button>
+            {/* Prestataire */}
             <button
               onClick={() => onNavigate("prestataire-dashboard")}
-              className="hidden md:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm"
+              className="hidden lg:inline font-semibold text-gray-700 hover:text-[#000080] transition-colors text-sm px-3 py-2 hover:bg-gray-100 rounded-lg"
             >
               Prestataire
             </button>
+            {/* Connexion */}
             <button
               onClick={() => onNavigate("login")}
-              className="hidden sm:inline font-semibold text-[#000080] hover:text-blue-700 transition-colors text-sm"
+              className="hidden lg:inline font-semibold text-[#000080] hover:text-blue-700 transition-colors text-sm px-3 py-2 hover:bg-gray-100 rounded-lg"
             >
               Connexion
             </button>
-            <Button
+
+            {/* User Icon - Client Space */}
+            <button
               onClick={() => onNavigate("dashboard")}
-              className="bg-[#000080] hover:bg-blue-900 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm h-10"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Espace Client"
             >
-              Espace Client
-            </Button>
+              <User size={20} className="text-gray-700" />
+            </button>
+
+            {/* Notification Bell - Right */}
+            <button
+              className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Notifications"
+            >
+              <Bell size={20} className="text-gray-700" />
+              {notificationCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {notificationCount}
+                </span>
+              )}
+            </button>
 
             {/* Mobile Menu Button */}
             <button
@@ -96,22 +132,48 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden pb-4 border-t border-gray-200">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  onNavigate(item.id);
-                  setIsMenuOpen(false);
-                }}
-                className={`block w-full text-left px-4 py-3 font-semibold text-sm transition-colors ${
-                  currentPage === item.id
-                    ? "text-[#000080] bg-[#FFF4EA]"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+            <button
+              onClick={() => {
+                onNavigate("home");
+                setIsMenuOpen(false);
+              }}
+              className={`block w-full text-left px-4 py-3 font-semibold text-sm flex items-center gap-3 ${
+                currentPage === "home"
+                  ? "text-[#000080] bg-[#FFF4EA]"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <Home size={20} />
+              Accueil
+            </button>
+            <button
+              onClick={() => {
+                onNavigate("categories");
+                setIsMenuOpen(false);
+              }}
+              className={`block w-full text-left px-4 py-3 font-semibold text-sm ${
+                currentPage === "categories"
+                  ? "text-[#000080] bg-[#FFF4EA]"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              Services
+            </button>
+            <button
+              onClick={() => {
+                onNavigate("contact");
+                setIsMenuOpen(false);
+              }}
+              className={`block w-full text-left px-4 py-3 font-semibold text-sm flex items-center gap-3 ${
+                currentPage === "contact"
+                  ? "text-[#000080] bg-[#FFF4EA]"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              <Phone size={20} />
+              Contact
+            </button>
+            <div className="border-t border-gray-200 my-2" />
             <button
               onClick={() => {
                 onNavigate("login");

@@ -12,6 +12,8 @@ import {
   MessageCircle,
   Headphones,
 } from "lucide-react";
+import { validateFormField } from "../../lib/validations";
+import { toast } from "sonner";
 
 interface ContactPageProps {
   onNavigate: (page: string) => void;
@@ -26,35 +28,147 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
     message: "",
   });
 
+  // États pour les erreurs de validation
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Validation en temps réel
+    if (touched[field]) {
+      validateFieldRealTime(field, value);
+    }
+  };
+
+  // Validation en temps réel d'un champ
+  const validateFieldRealTime = (field: string, value: string): boolean => {
+    let error: string | null = null;
+
+    switch (field) {
+      case "email":
+        error = validateFormField(value, "email", "Email");
+        break;
+      case "name":
+        error = validateFormField(value, "name", "Nom");
+        break;
+      case "phone":
+        if (value && value.trim() !== "") {
+          error = validateFormField(value, "phone", "Téléphone");
+        }
+        break;
+      case "subject":
+        if (!value || value.trim().length < 5) {
+          error = "Le sujet doit contenir au moins 5 caractères";
+        }
+        break;
+      case "message":
+        if (!value || value.trim().length < 10) {
+          error = "Le message doit contenir au moins 10 caractères";
+        }
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [field]: error || "" }));
+    return !error;
+  };
+
+  // Gestion de la perte de focus
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    validateFieldRealTime(field, formData[field as keyof typeof formData]);
+  };
+
+  // Valider le formulaire complet
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    // Validation du nom
+    const nameError = validateFormField(formData.name, "name", "Nom");
+    if (nameError) {
+      newErrors.name = nameError;
+      isValid = false;
+    }
+
+    // Validation de l'email
+    const emailError = validateFormField(formData.email, "email", "Email");
+    if (emailError) {
+      newErrors.email = emailError;
+      isValid = false;
+    }
+
+    // Validation du téléphone (optionnel mais si fourni, doit être valide)
+    if (formData.phone && formData.phone.trim() !== "") {
+      const phoneError = validateFormField(
+        formData.phone,
+        "phone",
+        "Téléphone",
+      );
+      if (phoneError) {
+        newErrors.phone = phoneError;
+        isValid = false;
+      }
+    }
+
+    // Validation du sujet
+    if (!formData.subject || formData.subject.trim().length < 5) {
+      newErrors.subject = "Le sujet doit contenir au moins 5 caractères";
+      isValid = false;
+    }
+
+    // Validation du message
+    if (!formData.message || formData.message.trim().length < 10) {
+      newErrors.message = "Le message doit contenir au moins 10 caractères";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    setTouched({
+      name: true,
+      email: true,
+      phone: true,
+      subject: true,
+      message: true,
+    });
+
+    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
+
+    // Validation avant soumission
+    if (!validateForm()) {
+      toast.error("Veuillez corriger les erreurs dans le formulaire");
+      return;
+    }
+
+    toast.success(
       "Merci pour votre message ! Nous vous répondrons dans les 24 heures.",
     );
     setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    setErrors({});
+    setTouched({});
   };
 
   const contactInfo = [
     {
       icon: Phone,
       title: "Appelez-nous",
-      details: "+33 1 23 45 67 89",
+      details: "+221 77 123 45 67",
       subtitle: "Disponible 24/7 pour les urgences",
     },
     {
       icon: Mail,
       title: "Envoyez-nous un Email",
-      details: "support@kamwala.com",
+      details: "support@kaayjob.com",
       subtitle: "Nous répondrons sous 24 heures",
     },
     {
       icon: MapPin,
       title: "Venez nous voir",
-      details: "123 Quartier d'Affaires, Paris",
+      details: "Dakar, Sénégal",
       subtitle: "Lundi - Vendredi, 9h - 18h",
     },
     {
@@ -84,7 +198,7 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
     {
       question: "Comment effectuer les paiements ?",
       answer:
-        "Nous acceptons les cartes de crédit/débit, PayPal et le paiement à la livraison. Tous les paiements en ligne sont sécurisés avec un cryptage de niveau industriel.",
+        "Nous acceptons les cartes de crédit/débit, Orange Money, Wave et le paiement à la livraison. Tous les paiements en ligne sont sécurisés avec un cryptage de niveau industriel.",
     },
     {
       question: "Que faire si je ne suis pas satisfait du service ?",
@@ -133,9 +247,14 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                         onChange={(e) =>
                           handleInputChange("name", e.target.value)
                         }
-                        className="mt-2 text-base"
-                        required
+                        onBlur={() => handleBlur("name")}
+                        className={`mt-2 text-base ${errors.name && touched.name ? "border-red-500" : ""}`}
                       />
+                      {errors.name && touched.name && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="email" className="text-base">
@@ -144,14 +263,19 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="Entrez votre email"
+                        placeholder="exemple@email.com"
                         value={formData.email}
                         onChange={(e) =>
                           handleInputChange("email", e.target.value)
                         }
-                        className="mt-2 text-base"
-                        required
+                        onBlur={() => handleBlur("email")}
+                        className={`mt-2 text-base ${errors.email && touched.email ? "border-red-500" : ""}`}
                       />
+                      {errors.email && touched.email && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -163,13 +287,19 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="Entrez votre numéro de téléphone"
+                        placeholder="+221771234567"
                         value={formData.phone}
                         onChange={(e) =>
                           handleInputChange("phone", e.target.value)
                         }
-                        className="mt-2 text-base"
+                        onBlur={() => handleBlur("phone")}
+                        className={`mt-2 text-base ${errors.phone && touched.phone ? "border-red-500" : ""}`}
                       />
+                      {errors.phone && touched.phone && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.phone}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="subject" className="text-base">
@@ -182,9 +312,14 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                         onChange={(e) =>
                           handleInputChange("subject", e.target.value)
                         }
-                        className="mt-2 text-base"
-                        required
+                        onBlur={() => handleBlur("subject")}
+                        className={`mt-2 text-base ${errors.subject && touched.subject ? "border-red-500" : ""}`}
                       />
+                      {errors.subject && touched.subject && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.subject}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -199,10 +334,15 @@ export function ContactPage({ onNavigate }: ContactPageProps) {
                       onChange={(e) =>
                         handleInputChange("message", e.target.value)
                       }
-                      className="mt-2 text-base min-h-[120px]"
+                      onBlur={() => handleBlur("message")}
+                      className={`mt-2 text-base min-h-[120px] ${errors.message && touched.message ? "border-red-500" : ""}`}
                       rows={6}
-                      required
                     />
+                    {errors.message && touched.message && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.message}
+                      </p>
+                    )}
                   </div>
 
                   <Button

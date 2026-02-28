@@ -29,30 +29,23 @@ import { PrestataireBookings } from "./components/prestataire/PrestataireBooking
 import { PrestataireProfile } from "./components/prestataire/PrestataireProfile";
 import { PrestataireSettings } from "./components/prestataire/PrestataireSettings";
 
-// Admin imports
-import { AdminSidebar } from "./components/admin/AdminSidebar";
-import { AdminDashboard } from "./components/admin/AdminDashboard";
-import { AdminUsers } from "./components/admin/AdminUsers";
-import { AdminServices } from "./components/admin/AdminServices";
-import { AdminBookings } from "./components/admin/AdminBookings";
-import { AdminAnalytics } from "./components/admin/AdminAnalytics";
-import { AdminSettings } from "./components/admin/AdminSettings";
-import { AdminSubscriptions } from "./components/admin/AdminSubscriptions";
-import { AdminPayments } from "./components/admin/AdminPayments";
-
-// Prestataire imports
-import { PrestataireSidebar } from "./components/prestataire/PrestataireSidebar";
-import { PrestataireDashboard } from "./components/prestataire/PrestataireDashboard";
-import { PrestataireServices } from "./components/prestataire/PrestataireServices";
-import { PrestataireBookings } from "./components/prestataire/PrestataireBookings";
-import { PrestataireProfile } from "./components/prestataire/PrestataireProfile";
-import { PrestataireSettings } from "./components/prestataire/PrestataireSettings";
-
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
 
   const handleNavigate = (page: string) => {
-    setCurrentPage(page);
+    // Si la page contient des paramètres de requête, les ajouter à l'URL
+    if (page.includes("?")) {
+      const [pageName, queryString] = page.split("?");
+      // Mettre à jour l'URL sans recharger
+      window.history.pushState({}, "", `?${queryString}`);
+      setCurrentPage(pageName);
+    } else if (page === "home") {
+      window.history.pushState({}, "", "/");
+      setCurrentPage(page);
+    } else {
+      window.history.pushState({}, "", `/${page}`);
+      setCurrentPage(page);
+    }
   };
 
   // Rendu des pages admin
@@ -109,11 +102,15 @@ export default function App() {
     }
 
     // Pages client
-    switch (currentPage) {
+    const pageName = currentPage.split("?")[0]; // Extraire le nom de la page sans les paramètres
+    switch (pageName) {
       case "home":
         return <HomePage onNavigate={handleNavigate} />;
       case "login":
-        return <LoginPage onNavigate={handleNavigate} />;
+      case "login-provider":
+        return (
+          <LoginPage onNavigate={handleNavigate} defaultTab="login-provider" />
+        );
       case "categories":
         return <ServiceCategoriesPage onNavigate={handleNavigate} />;
       case "service-providers":
