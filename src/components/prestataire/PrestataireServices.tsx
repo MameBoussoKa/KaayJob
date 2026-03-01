@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Textarea } from "../ui/textarea";
 import {
   Table,
   TableBody,
@@ -26,6 +28,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 // Données simulées
 const mockServices = [
@@ -69,10 +87,24 @@ const mockServices = [
 
 export function PrestataireServices() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newService, setNewService] = useState({
+    name: "",
+    category: "",
+    price: "",
+    description: "",
+  });
 
   const filteredServices = mockServices.filter((service) =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const handleAddService = () => {
+    // Logique pour ajouter le service (à connecter avec l'API backend)
+    console.log("Nouveau service:", newService);
+    setIsAddDialogOpen(false);
+    setNewService({ name: "", category: "", price: "", description: "" });
+  };
 
   return (
     <div className="p-6 lg:p-8 lg:ml-64">
@@ -82,7 +114,10 @@ export function PrestataireServices() {
           <h1 className="text-3xl font-bold text-[#000080]">Mes services</h1>
           <p className="text-gray-500 mt-1">Gérez vos services proposés</p>
         </div>
-        <Button className="mt-4 md:mt-0 bg-[#000080] hover:bg-blue-900">
+        <Button 
+          className="mt-4 md:mt-0 bg-[#000080] hover:bg-blue-900"
+          onClick={() => setIsAddDialogOpen(true)}
+        >
           <Plus size={20} className="mr-2" />
           Ajouter un service
         </Button>
@@ -215,6 +250,81 @@ export function PrestataireServices() {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Dialog pour ajouter un nouveau service */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Ajouter un Nouveau Service</DialogTitle>
+            <DialogDescription>
+              Remplissez les informations pour créer un nouveau service.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="serviceName">Nom du Service</Label>
+              <Input
+                id="serviceName"
+                placeholder="Ex: Réparation Smartphone"
+                value={newService.name}
+                onChange={(e) => setNewService({ ...newService, name: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="category">Catégorie</Label>
+              <Select
+                value={newService.category}
+                onValueChange={(value) => setNewService({ ...newService, category: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner une catégorie" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Technologie">Technologie</SelectItem>
+                  <SelectItem value="Bâtiment">Bâtiment</SelectItem>
+                  <SelectItem value="Véhicules">Véhicules</SelectItem>
+                  <SelectItem value="Maison">Maison</SelectItem>
+                  <SelectItem value="Beauté">Beauté</SelectItem>
+                  <SelectItem value="Formation">Formation</SelectItem>
+                  <SelectItem value="Autre">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="price">Prix (CFA)</Label>
+              <Input
+                id="price"
+                type="number"
+                placeholder="Ex: 15000"
+                value={newService.price}
+                onChange={(e) => setNewService({ ...newService, price: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                placeholder="Décrivez votre service..."
+                value={newService.description}
+                onChange={(e) => setNewService({ ...newService, description: e.target.value })}
+                rows={3}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button 
+              className="bg-[#000080] hover:bg-blue-900"
+              onClick={handleAddService}
+              disabled={!newService.name || !newService.category || !newService.price}
+            >
+              Ajouter le Service
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -88,20 +88,33 @@ export function UserDashboard({ onNavigate }: UserDashboardProps) {
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Profile Header */}
-        <Card className="bg-white border-0 shadow-md mb-8">
+        {/* Profile Header - adapted to image: centered avatar, dark green background */}
+        <Card
+          style={{ backgroundColor: "#1E40AF", color: "#ffffff" }}
+          className="border-0 shadow-md mb-8 rounded-lg overflow-hidden"
+        >
           <CardContent className="p-8">
-            <div className="flex items-center space-x-6">
-              <Avatar className="w-20 h-20">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="text-2xl">SA</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {user.name}
-                </h1>
-                <p className="text-gray-600 text-lg mb-1">{user.email}</p>
-                <p className="text-gray-600">{user.phone}</p>
+            <div className="flex flex-col items-center text-center">
+              <div
+                className="rounded-full p-1 -mt-10"
+                style={{ backgroundColor: "#153a8b" }}
+              >
+                <Avatar className="w-24 h-24 ring-4 ring-white shadow-lg">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback className="text-2xl">
+                    {user.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .slice(0, 2)
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="mt-4">
+                <h1 className="text-2xl font-semibold">{user.name}</h1>
+                <p className="text-sm mt-1" style={{ color: "#E6F5FF" }}>
+                  {user.email}
+                </p>
               </div>
             </div>
           </CardContent>

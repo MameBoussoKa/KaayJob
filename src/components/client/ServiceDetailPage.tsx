@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -10,6 +11,7 @@ import {
   MessageCircle,
   Award,
   CheckCircle,
+  ArrowLeft,
 } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 
@@ -17,59 +19,181 @@ interface ServiceDetailPageProps {
   onNavigate: (page: string) => void;
 }
 
-export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
-  const provider = {
-    name: "Ahmed Khan",
+// Mock data - à remplacer par un appel API
+const providersData: Record<string, {
+  name: string;
+  title: string;
+  rating: number;
+  totalReviews: number;
+  yearsExperience: number;
+  image: string;
+  hourlyRate: number;
+  location: string;
+  phone: string;
+  specialties: string[];
+  verified: boolean;
+  responseTime: string;
+  services: { name: string; price: string }[];
+  reviews: { name: string; rating: number; date: string; comment: string }[];
+}> = {
+  "provider-1": {
+    name: "Kwame Osei",
     title: "Plombier Expert",
-    rating: 4.5,
-    reviews: 120,
+    rating: 4.8,
+    totalReviews: 156,
     yearsExperience: 8,
-    image:
-      "https://images.unsplash.com/photo-1604118600242-e7a6d23ec3a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwbHVtYmVyJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzU3NTk4Njc2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
     hourlyRate: 25,
-    location: "Karachi, Pakistan",
-    phone: "+92-300-1234567",
-    specialties: [
-      "Installation de Canalisations",
-      "Réparation de Fuites",
-      "Nettoyage de Drains",
-      "Réparation de Chauffe-eau",
-    ],
+    location: "Dakar, Sénégal",
+    phone: "+221 77 123 45 67",
+    specialties: ["Installation de Canalisations", "Réparation de Fuites", "Nettoyage de Drains", "Réparation de Chauffe-eau"],
     verified: true,
     responseTime: "Répond généralement dans les 2 heures",
+    services: [
+      { name: "Installation de Canalisations", price: "À partir de 30€" },
+      { name: "Réparation de Fuites", price: "À partir de 25€" },
+      { name: "Nettoyage de Drains", price: "À partir de 20€" },
+      { name: "Réparation de Chauffe-eau", price: "À partir de 40€" },
+      { name: "Service d'Urgence", price: "À partir de 50€" },
+    ],
+    reviews: [
+      { name: "Sarah Ahmed", rating: 5, date: "Il y a 2 jours", comment: "Excellent service ! Kwame a rapidement réparé notre fuite de cuisine." },
+      { name: "Mohammad Ali", rating: 4, date: "Il y a 1 semaine", comment: "Bon travail sur la plomberie. Arrivé à l'heure." },
+      { name: "Fatima Khan", rating: 5, date: "Il y a 2 semaines", comment: "Très compétent et honnête. Prix juste." },
+    ],
+  },
+  "provider-2": {
+    name: "Amina Diallo",
+    title: "Électricienne Certifiée",
+    rating: 4.9,
+    totalReviews: 203,
+    yearsExperience: 10,
+    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80&crop=faces&fit=crop",
+    hourlyRate: 30,
+    location: "Dakar, Sénégal",
+    phone: "+221 76 234 56 78",
+    specialties: ["Installation Électrique", "Réparation de Pannes", "Mise aux Normes", "Domotique"],
+    verified: true,
+    responseTime: "Répond généralement dans les 1 heure",
+    services: [
+      { name: "Installation Électrique", price: "À partir de 40€" },
+      { name: "Réparation de Pannes", price: "À partir de 35€" },
+      { name: "Mise aux Normes", price: "À partir de 80€" },
+      { name: "Domotique", price: "À partir de 100€" },
+      { name: "Service d'Urgence", price: "À partir de 60€" },
+    ],
+    reviews: [
+      { name: "Aliou Diop", rating: 5, date: "Il y a 3 jours", comment: "Travail impeccable. Très professionnelle!" },
+      { name: "Mariama Sow", rating: 5, date: "Il y a 1 semaine", comment: "Très satisfaite du travail effectué." },
+      { name: "Cheikh Fall", rating: 4, date: "Il y a 2 semaines", comment: "Rapide et efficace." },
+    ],
+  },
+  "provider-3": {
+    name: "Ibrahim Sow",
+    title: "Peintre Professionnel",
+    rating: 4.7,
+    totalReviews: 89,
+    yearsExperience: 5,
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&crop=faces&fit=crop",
+    hourlyRate: 20,
+    location: "Dakar, Sénégal",
+    phone: "+221 70 345 67 89",
+    specialties: ["Peinture Intérieure", "Peinture Extérieure", "Décoration", "Rénovation"],
+    verified: true,
+    responseTime: "Répond généralement dans les 3 heures",
+    services: [
+      { name: "Peinture Intérieure", price: "À partir de 15€" },
+      { name: "Peinture Extérieure", price: "À partir de 18€" },
+      { name: "Décoration", price: "À partir de 25€" },
+      { name: "Rénovation", price: "À partir de 30€" },
+    ],
+    reviews: [
+      { name: "Moussa Ndiaye", rating: 5, date: "Il y a 5 jours", comment: "Super travail! Ma maison est magnifique." },
+      { name: "Aïda Mbaye", rating: 4, date: "Il y a 2 semaines", comment: "Bon travail, bon rapport qualité-prix." },
+    ],
+  },
+  "provider-4": {
+    name: "Fatoumata Ba",
+    title: "Nettoyeur Professionnel",
+    rating: 4.9,
+    totalReviews: 234,
+    yearsExperience: 6,
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&crop=faces&fit=crop",
+    hourlyRate: 18,
+    location: "Dakar, Sénégal",
+    phone: "+221 78 456 78 90",
+    specialties: ["Nettoyage Maison", "Nettoyage Bureau", "Nettoyage Fin de Chantier", "Pressing"],
+    verified: true,
+    responseTime: "Répond généralement dans les 30 minutes",
+    services: [
+      { name: "Nettoyage Maison", price: "À partir de 20€" },
+      { name: "Nettoyage Bureau", price: "À partir de 25€" },
+      { name: "Nettoyage Fin de Chantier", price: "À partir de 50€" },
+      { name: "Pressing", price: "À partir de 10€" },
+    ],
+    reviews: [
+      { name: "Pape Dieng", rating: 5, date: "Il y a 1 jour", comment: "Maison impeccable! Très satisfaite." },
+      { name: "Ndeye Fatou", rating: 5, date: "Il y a 4 jours", comment: "Au top! Je recommande fortement." },
+      { name: "Mamadou Barry", rating: 5, date: "Il y a 1 semaine", comment: "Ponctuelle et efficace." },
+    ],
+  },
+  "provider-5": {
+    name: "Kofi Mensah",
+    title: "Menuisier Experimente",
+    rating: 4.6,
+    totalReviews: 121,
+    yearsExperience: 12,
+    image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&q=80&crop=faces&fit=crop",
+    hourlyRate: 35,
+    location: "Dakar, Sénégal",
+    phone: "+221 75 567 89 01",
+    specialties: ["Meubles sur Mesure", "Rénovation Meubles", "Pose de Parquet", "Fabrication Porte"],
+    verified: true,
+    responseTime: "Répond généralement dans les 4 heures",
+    services: [
+      { name: "Meubles sur Mesure", price: "À partir de 100€" },
+      { name: "Rénovation Meubles", price: "À partir de 50€" },
+      { name: "Pose de Parquet", price: "À partir de 25€" },
+      { name: "Fabrication Porte", price: "À partir de 80€" },
+    ],
+    reviews: [
+      { name: "Seydou Konaté", rating: 5, date: "Il y a 1 semaine", comment: "Meuble magnifique, travail sehr gut!" },
+      { name: "Khalilou Faye", rating: 4, date: "Il y a 3 semaines", comment: "Bon travail, délais respectés." },
+    ],
+  },
+};
+
+export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
+  const [providerId, setProviderId] = useState<string>("");
+  const [provider, setProvider] = useState<typeof providersData["provider-1"] | null>(null);
+
+  useEffect(() => {
+    // Extraire l'ID du prestataire de l'URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "provider-1";
+    setProviderId(id);
+    
+    // Charger les données du prestataire
+    if (providersData[id]) {
+      setProvider(providersData[id]);
+    } else {
+      // Par défaut, utiliser provider-1
+      setProvider(providersData["provider-1"]);
+    }
+  }, []);
+
+  if (!provider) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+        <p className="text-gray-500">Chargement...</p>
+      </div>
+    );
+  }
+
+  const handleBookNow = () => {
+    // Naviguer vers la page de réservation avec l'ID du prestataire
+    onNavigate(`booking?provider=${providerId}`);
   };
-
-  const reviews = [
-    {
-      name: "Sarah Ahmed",
-      rating: 5,
-      date: "Il y a 2 jours",
-      comment:
-        "Excellent service ! Ahmed a rapidement réparé notre fuite de cuisine de manière professionnelle. Highly recommended!",
-    },
-    {
-      name: "Mohammad Ali",
-      rating: 4,
-      date: "Il y a 1 semaine",
-      comment:
-        "Bon travail sur la plomberie de la salle de bain. Arrivé à l'heure et a nettoyé après le travail.",
-    },
-    {
-      name: "Fatima Khan",
-      rating: 5,
-      date: "Il y a 2 semaines",
-      comment:
-        "Très compétent et honnête. Expliqué clairement le problème et a donné un prix juste.",
-    },
-  ];
-
-  const services = [
-    { name: "Installation de Canalisations", price: "À partir de 30€" },
-    { name: "Réparation de Fuites", price: "À partir de 25€" },
-    { name: "Nettoyage de Drains", price: "À partir de 20€" },
-    { name: "Réparation de Chauffe-eau", price: "À partir de 40€" },
-    { name: "Service d'Urgence", price: "À partir de 50€" },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -117,7 +241,7 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
                           ))}
                         </div>
                         <span className="ml-2 text-lg font-semibold text-[#000080]">
-                          {provider.rating} ({provider.reviews} avis)
+                          {provider.rating} ({provider.totalReviews} avis)
                         </span>
                       </div>
                       <div className="flex items-center text-[#000080] font-semibold">
@@ -146,7 +270,7 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold mb-6">Services et Tarifs</h2>
                 <div className="space-y-4">
-                  {services.map((service, index) => (
+                  {provider.services.map((service, index) => (
                     <div
                       key={index}
                       className="flex justify-between items-center py-3"
@@ -196,7 +320,7 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold mb-6">Avis Clients</h2>
                 <div className="space-y-6">
-                  {reviews.map((review, index) => (
+                  {provider.reviews.map((review, index) => (
                     <div
                       key={index}
                       className="border-b border-gray-200 pb-6 last:border-b-0"
@@ -247,7 +371,7 @@ export function ServiceDetailPage({ onNavigate }: ServiceDetailPageProps) {
                   <Button
                     size="lg"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 text-lg"
-                    onClick={() => onNavigate("booking")}
+                    onClick={handleBookNow}
                   >
                     Réserver Maintenant
                   </Button>

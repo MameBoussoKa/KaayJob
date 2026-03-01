@@ -23,6 +23,7 @@ interface BookingPageProps {
 
 export function BookingPage({ onNavigate }: BookingPageProps) {
   const [date, setDate] = useState<Date>();
+  const [viewDate, setViewDate] = useState(() => new Date());
   const [formData, setFormData] = useState({
     time: "",
     address: "",
@@ -277,27 +278,131 @@ export function BookingPage({ onNavigate }: BookingPageProps) {
                     )}
                   </div>
 
-                  {/* Date Picker - Simple version */}
-                  <div>
-                    <Label className="text-base">Date Préférée *</Label>
-                    <div className="mt-2">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={(selectedDate: Date | undefined) => {
-                          setDate(selectedDate);
-                          setTouched((prev) => ({ ...prev, date: true }));
-                          if (selectedDate) {
-                            setErrors((prev) => ({ ...prev, date: "" }));
+                  {/* Date Picker - Modern Calendar version */}
+                  <div className="space-y-2">
+                    <Label className="text-base font-semibold text-[#000080]">
+                      Date Préférée *
+                    </Label>
+                    
+                    {/* Sélection mois et année */}
+                    <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-t-lg border border-b-0 border-gray-200">
+                      <select
+                        title="Mois"
+                        value={viewDate.getMonth()}
+                        onChange={(e) => {
+                          const newDate = new Date(viewDate);
+                          newDate.setMonth(parseInt(e.target.value));
+                          setViewDate(newDate);
+                          if (newDate >= minDate && newDate <= maxDate) {
+                            setDate(newDate);
                           }
                         }}
-                        fromDate={minDate}
-                        toDate={maxDate}
-                        className="rounded-md border"
-                      />
+                        className="flex-1 p-2 border border-gray-300 rounded-md text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-[#000080]"
+                      >
+                        {["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"].map((month, idx) => (
+                          <option key={month} value={idx}>{month}</option>
+                        ))}
+                      </select>
+                      <select
+                        title="Année"
+                        value={viewDate.getFullYear()}
+                        onChange={(e) => {
+                          const newDate = new Date(viewDate);
+                          newDate.setFullYear(parseInt(e.target.value));
+                          setViewDate(newDate);
+                          if (newDate >= minDate && newDate <= maxDate) {
+                            setDate(newDate);
+                          }
+                        }}
+                        className="flex-1 p-2 border border-gray-300 rounded-md text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-[#000080]"
+                      >
+                        {[2024, 2025, 2026, 2027].map((year) => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
                     </div>
+                    
+                    {/* Calendrier */}
+                    <div className="border border-gray-200 rounded-b-lg bg-white p-2">
+                      {/* En-tête jours */}
+                      <div className="grid grid-cols-7 gap-1 mb-1">
+                        {["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"].map((day, idx) => (
+                          <div key={day} className={`text-center text-xs font-semibold py-1 ${idx === 0 ? "text-red-500" : "text-gray-500"}`}>
+                            {day}
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Grille de jours */}
+                      <div className="grid grid-cols-7 gap-1">
+                        {(() => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          const currentDate = new Date(viewDate);
+                          currentDate.setHours(0, 0, 0, 0);
+                          const year = currentDate.getFullYear();
+                          const month = currentDate.getMonth();
+                          const firstDay = new Date(year, month, 1).getDay();
+                          const daysInMonth = new Date(year, month + 1, 0).getDate();
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          const days: any[] = [];
+                          
+                          // Jours vides au début
+                          for (let i = 0; i < firstDay; i++) {
+                            days.push(<div key={`empty-${i}`} className="h-8"></div>);
+                          }
+                          
+                          // Jours du mois
+                          for (let day = 1; day <= daysInMonth; day++) {
+                            const dayDate = new Date(year, month, day);
+                            dayDate.setHours(0, 0, 0, 0);
+                            const isPast = dayDate < today;
+                            const isFuture = dayDate > maxDate;
+                            const isDisabled = isPast || isFuture;
+                            const isSelected = date && dayDate.getTime() === new Date(date).setHours(0,0,0,0);
+                            const isToday = dayDate.getTime() === today.getTime();
+                            
+                            days.push(
+                              <button
+                                key={day}
+                                type="button"
+                                disabled={isDisabled}
+                                onClick={() => {
+                                  setDate(dayDate);
+                                  setTouched((prev) => ({ ...prev, date: true }));
+                                  setErrors((prev) => ({ ...prev, date: "" }));
+                                }}
+                                className={`h-8 w-full rounded text-sm font-medium transition-all flex items-center justify-center ${
+                                  isSelected 
+                                    ? "bg-[#000080] text-white shadow" 
+                                    : isToday 
+                                      ? "bg-blue-100 text-[#000080] border border-[#000080] font-bold text-xs"
+                                      : isDisabled 
+                                        ? "text-gray-300 cursor-not-allowed bg-gray-50 text-xs"
+                                        : "hover:bg-gray-100 text-gray-700 text-xs"
+                                }`}
+                              >
+                                {day}
+                              </button>
+                            );
+                          }
+                          return days;
+                        })()}
+                      </div>
+                    </div>
+                    
+                    {/* Date sélectionnée affichée */}
+                    {date && (
+                      <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded flex items-center gap-2 text-sm">
+                        <CalendarIcon className="w-4 h-4 text-green-600" />
+                        <span className="text-green-700 font-medium">
+                          {date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+                        </span>
+                      </div>
+                    )}
+                    
                     {errors.date && touched.date && (
-                      <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+                      <p className="text-red-500 text-sm">{errors.date}</p>
                     )}
                   </div>
 

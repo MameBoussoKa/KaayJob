@@ -90,7 +90,7 @@ const featuredProviders: Provider[] = [
     rating: 4.9,
     reviews: 203,
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80&crop=faces&fit=crop",
     price: "30€/h",
     id: "provider-2",
   },
@@ -100,7 +100,7 @@ const featuredProviders: Provider[] = [
     rating: 4.7,
     reviews: 89,
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&crop=faces&fit=crop",
     price: "20€/h",
     id: "provider-3",
   },
@@ -110,7 +110,7 @@ const featuredProviders: Provider[] = [
     rating: 4.9,
     reviews: 234,
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&crop=faces&fit=crop",
     price: "18€/h",
     id: "provider-4",
   },
@@ -120,7 +120,7 @@ const featuredProviders: Provider[] = [
     rating: 4.6,
     reviews: 121,
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
+      "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&q=80&crop=faces&fit=crop",
     price: "35€/h",
     id: "provider-5",
   },
