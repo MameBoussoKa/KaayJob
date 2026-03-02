@@ -1,0 +1,6 @@
+/**
+ * Routes des avis
+ */
+declare const router: import("express-serve-static-core").Router;
+export default router;
+//# sourceMappingURL=reviews.d.ts.map

@@ -1,0 +1,6 @@
+/**
+ * Routes des prestataires
+ */
+declare const router: import("express-serve-static-core").Router;
+export default router;
+//# sourceMappingURL=providers.d.ts.map
