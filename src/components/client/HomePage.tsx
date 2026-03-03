@@ -72,56 +72,56 @@ const categories: Category[] = [
   },
 ];
 
-// Featured providers with carousel - African professionals
+// Prestataires en vedette avec carousel - Professionnels sénégalais
 const featuredProviders: Provider[] = [
   {
-    name: "Kwame Osei",
+    name: "Moussa Diop",
     service: "Plombier",
     rating: 4.8,
     reviews: 156,
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&crop=faces&fit=crop",
-    price: "25€/h",
+      "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=400&q=80&crop=faces&fit=crop",
+    price: "15 000 FCA/h",
     id: "provider-1",
   },
   {
-    name: "Amina Diallo",
+    name: "Aminata Faye",
     service: "Électricien",
     rating: 4.9,
     reviews: 203,
     image:
-      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80&crop=faces&fit=crop",
-    price: "30€/h",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80&crop=faces&fit=crop",
+    price: "20 000 FCA/h",
     id: "provider-2",
   },
   {
-    name: "Ibrahim Sow",
+    name: "Ibrahima Sow",
     service: "Peintre",
     rating: 4.7,
     reviews: 89,
     image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&crop=faces&fit=crop",
-    price: "20€/h",
+      "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=400&q=80&crop=faces&fit=crop",
+    price: "12 000 FCA/h",
     id: "provider-3",
   },
   {
-    name: "Fatoumata Ba",
+    name: "Fatou Ba",
     service: "Nettoyeur",
     rating: 4.9,
     reviews: 234,
     image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&crop=faces&fit=crop",
-    price: "18€/h",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80&crop=faces&fit=crop",
+    price: "10 000 FCA/h",
     id: "provider-4",
   },
   {
-    name: "Kofi Mensah",
+    name: "Mamadou Mbaye",
     service: "Menuisier",
     rating: 4.6,
     reviews: 121,
     image:
-      "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&q=80&crop=faces&fit=crop",
-    price: "35€/h",
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&crop=faces&fit=crop",
+    price: "25 000 FCA/h",
     id: "provider-5",
   },
 ];

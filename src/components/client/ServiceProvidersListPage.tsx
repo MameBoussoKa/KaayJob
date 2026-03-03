@@ -34,9 +34,9 @@ export function ServiceProvidersListPage({
       reviews: 124,
       yearsExperience: 8,
       image:
-        "https://images.unsplash.com/photo-1604118600242-e7a6d23ec3a9?w=200&q=80",
+        "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=200&q=80",
       location: "Dakar, Sénégal",
-      hourlyRate: 25,
+      hourlyRate: 15000,
       responseTime: "2 heures",
       verified: true,
       specialties: [
@@ -53,9 +53,9 @@ export function ServiceProvidersListPage({
       reviews: 89,
       yearsExperience: 5,
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+        "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=200&q=80",
       location: "Dakar, Sénégal",
-      hourlyRate: 20,
+      hourlyRate: 12000,
       responseTime: "1 heure",
       verified: true,
       specialties: ["Réparation de Fuites", "Chauffe-eau", "Drains"],
@@ -70,7 +70,7 @@ export function ServiceProvidersListPage({
       image:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80",
       location: "Pikine, Sénégal",
-      hourlyRate: 30,
+      hourlyRate: 18000,
       responseTime: "3 heures",
       verified: true,
       specialties: ["Inspection Caméra", "Débouchage", "Réhabilitation"],
@@ -85,7 +85,7 @@ export function ServiceProvidersListPage({
       image:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
       location: "Guédiawaye, Sénégal",
-      hourlyRate: 18,
+      hourlyRate: 10000,
       responseTime: "30 minutes",
       verified: false,
       specialties: ["Petites Réparations", "Entretien", "Installation"],
