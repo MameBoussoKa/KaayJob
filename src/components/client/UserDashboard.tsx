@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import { Calendar, Clock, MapPin, Star, Settings, Bell, CreditCard, User, Plus, ChevronRight } from "lucide-react";
+import { Calendar, Clock, MapPin, Star, Settings, Bell, CreditCard, User, Plus, ChevronRight, FileText, CheckCircle, Hourglass, Heart } from "lucide-react";
 
 interface UserDashboardProps {
   onNavigate: (page: string) => void;
@@ -84,18 +84,24 @@ export function UserDashboard({ onNavigate }: UserDashboardProps) {
         {/* Stats - 4 cartes centrées */}
         <div className="grid grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Total", value: "12" },
-            { label: "Terminées", value: "8" },
-            { label: "En attente", value: "3" },
-            { label: "Favoris", value: "0" },
-          ].map((stat, i) => (
-            <Card key={i} className="bg-white border-0 shadow text-center">
-              <CardContent className="p-4">
-                <p className="text-2xl font-bold text-[#000080]">{stat.value}</p>
-                <p className="text-xs text-gray-500">{stat.label}</p>
-              </CardContent>
-            </Card>
-          ))}
+            { label: "Total", value: "12", icon: FileText, color: "bg-[#000080]" },
+            { label: "Terminées", value: "8", icon: CheckCircle, color: "bg-[#000080]" },
+            { label: "En attente", value: "3", icon: Hourglass, color: "bg-[#000080]" },
+            { label: "Favoris", value: "0", icon: Heart, color: "bg-[#000080]" },
+          ].map((stat, i) => {
+            const IconComponent = stat.icon;
+            return (
+              <Card key={i} className="bg-white border-0 shadow text-center">
+                <CardContent className="p-4">
+                  <div className={`w-10 h-10 ${stat.color} rounded-full flex items-center justify-center mx-auto mb-2`}>
+                    <IconComponent className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-2xl font-bold text-[#000080]">{stat.value}</p>
+                  <p className="text-xs text-gray-500">{stat.label}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* Reservations - Centré */}
