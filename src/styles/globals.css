@@ -50,9 +50,8 @@
   }
 }
 
-
-
-
+/* Import Google Font - Poppins for modern luxury feel */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Custom Animations */
 @keyframes fade-in {
@@ -75,12 +74,109 @@
   100% { transform: translateY(10px); opacity: 0; }
 }
 
+/* Slow pulse animation for gradient orbs */
+@keyframes pulse-slow {
+  0%, 100% { 
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulse-slow-delayed {
+  0%, 100% { 
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Float animations */
+@keyframes float {
+  0%, 100% { 
+    transform: translate(0, 0);
+  }
+  50% { 
+    transform: translate(20px, -20px);
+  }
+}
+
+@keyframes float-diagonal {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% { 
+    transform: translate(15px, -25px) rotate(5deg);
+  }
+  50% { 
+    transform: translate(-10px, 15px) rotate(-3deg);
+  }
+  75% { 
+    transform: translate(20px, 10px) rotate(8deg);
+  }
+}
+
+/* Rotate slow */
+@keyframes rotate-slow {
+  0% { 
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% { 
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Shine effect for card header */
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Animation classes */
 .animate-fade-in { animation: fade-in 0.6s ease-out forwards; }
 .animate-slide-up { animation: slide-up 0.6s ease-out forwards; }
 .animate-scale-in { animation: scale-in 0.4s ease-out 0.2s forwards; opacity: 0; }
 .animate-scroll-down { animation: scroll-down 1.5s infinite; }
 
+/* Background animations */
+.animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
+.animate-pulse-slow-delayed { animation: pulse-slow-delayed 10s ease-in-out infinite; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-diagonal { animation: float-diagonal 7s ease-in-out infinite; }
+.animate-rotate-slow { animation: rotate-slow 20s linear infinite; }
+.animate-shine { animation: shine 3s ease-in-out infinite; }
+
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }
 .delay-300 { animation-delay: 0.3s; }
 
+/* Custom scrollbar for glassmorphism */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Focus outline for accessibility */
+*:focus-visible {
+  outline: 2px solid rgba(6, 182, 212, 0.6);
+  outline-offset: 2px;
+}
